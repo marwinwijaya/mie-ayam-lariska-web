@@ -1,0 +1,175 @@
+/* ============================================================
+   Mie Ayam Lariska — Admin Stylesheet
+   ============================================================ */
+
+/* === Admin Login Page === */
+.admin-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-background) 0%, var(--color-surface-alt) 100%);
+  padding: var(--space-md);
+}
+
+.admin-login__card {
+  background-color: var(--color-surface);
+  padding: var(--space-2xl);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  width: 100%;
+  max-width: 400px;
+}
+
+.admin-login__header {
+  text-align: center;
+  margin-bottom: var(--space-xl);
+}
+
+.admin-login__brand {
+  font-size: var(--font-size-2xl);
+  font-weight: 800;
+  color: var(--color-primary);
+  margin-bottom: var(--space-sm);
+}
+
+.admin-login__title {
+  font-size: var(--font-size-lg);
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* === Form Elements === */
+.form-group {
+  margin-bottom: var(--space-lg);
+}
+
+.form-label {
+  display: block;
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  color: var(--color-text);
+  margin-bottom: var(--space-sm);
+}
+
+.form-input {
+  width: 100%;
+  padding: var(--space-sm) var(--space-md);
+  font-size: var(--font-size-base);
+  border: 2px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  transition: border-color var(--transition-fast);
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: var(--color-primary);
+}
+
+.form-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+/* === Login Button === */
+.login-button {
+  width: 100%;
+  padding: var(--space-sm) var(--space-lg);
+  font-size: var(--font-size-base);
+  font-weight: 600;
+  background-color: var(--color-primary);
+  color: var(--color-button-text);
+  border: none;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: background-color var(--transition-fast);
+}
+
+.login-button:hover {
+  background-color: #A30000;
+}
+
+.login-button:disabled {
+  background-color: var(--color-text-muted);
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* === Error Message === */
+.error-message {
+  background-color: var(--color-soldout-bg);
+  color: var(--color-soldout);
+  padding: var(--space-sm) var(--space-md);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-sm);
+  font-weight: 500;
+  margin-bottom: var(--space-lg);
+  display: none;
+}
+
+.error-message.is-visible {
+  display: block;
+}
+
+/* === Admin Dashboard === */
+.admin-dashboard {
+  min-height: 100vh;
+  background-color: var(--color-background);
+}
+
+.admin-header {
+  background-color: var(--color-primary);
+  color: var(--color-button-text);
+  padding: var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: var(--shadow-md);
+}
+
+.admin-header__brand {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
+.admin-header__logout {
+  background-color: transparent;
+  color: var(--color-button-text);
+  border: 2px solid var(--color-button-text);
+  padding: var(--space-xs) var(--space-md);
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.admin-header__logout:hover {
+  background-color: var(--color-button-text);
+  color: var(--color-primary);
+}
+
+.admin-content {
+  padding: var(--space-xl);
+  max-width: var(--max-width);
+  margin: 0 auto;
+}
+
+.admin-content__title {
+  font-size: var(--font-size-2xl);
+  font-weight: 700;
+  color: var(--color-text);
+  margin-bottom: var(--space-lg);
+}
+
+/* === Responsive === */
+@media (max-width: 480px) {
+  .admin-login__card {
+    padding: var(--space-lg);
+  }
+
+  .admin-login__brand {
+    font-size: var(--font-size-xl);
+  }
+}

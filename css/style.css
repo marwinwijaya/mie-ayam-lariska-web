@@ -357,6 +357,14 @@ ul {
   border-radius: var(--radius-lg);
   text-align: center;
   box-shadow: var(--shadow-sm);
+  transition: all var(--transition-normal);
+  border: 1px solid transparent;
+}
+
+.why__card:hover {
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-secondary);
+  transform: translateY(-2px);
 }
 
 .why__icon {
@@ -414,11 +422,14 @@ ul {
   box-shadow: var(--shadow-sm);
   display: flex;
   flex-direction: row;
-  transition: box-shadow var(--transition-normal);
+  transition: all var(--transition-normal);
+  border: 1px solid transparent;
 }
 
 .menu__item-card:hover {
   box-shadow: var(--shadow-md);
+  border-color: var(--color-secondary);
+  transform: translateY(-2px);
 }
 
 .menu__item-image {
@@ -463,6 +474,10 @@ ul {
 .menu__item-price {
   font-size: var(--font-size-lg);
   font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .price {
@@ -475,11 +490,13 @@ ul {
 /* === Stock Badges === */
 .badge {
   display: inline-block;
-  padding: 2px 8px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: var(--space-xs);
 }
 
 .badge--available {
@@ -516,11 +533,16 @@ ul {
   text-align: center;
   box-shadow: var(--shadow-sm);
   border: 2px solid transparent;
-  transition: border-color var(--transition-normal);
+  transition: all var(--transition-normal);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .packages__card:hover {
   border-color: var(--color-secondary);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-4px);
 }
 
 .packages__card-name {
@@ -558,6 +580,7 @@ ul {
 
 .packages__card .btn {
   width: 100%;
+  margin-top: auto;
 }
 
 /* === Events Section === */
@@ -665,6 +688,12 @@ ul {
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   overflow: hidden;
+  transition: all var(--transition-normal);
+}
+
+.faq__item:hover {
+  border-color: var(--color-secondary);
+  box-shadow: var(--shadow-sm);
 }
 
 .faq__question {

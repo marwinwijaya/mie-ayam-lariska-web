@@ -1,6 +1,17 @@
 // @ts-check
 const { defineConfig } = require('@playwright/test');
 
+/**
+ * Playwright configuration for Mie Ayam Lariska Web E2E tests.
+ *
+ * Configures test execution with:
+ * - Parallel test execution
+ * - HTML reporter for test results
+ * - Local development server integration
+ * - Mobile-first viewport testing (iPhone SE, Pixel 5)
+ *
+ * @see https://playwright.dev/docs/test-configuration
+ */
 module.exports = defineConfig({
   testDir: './tests/e2e',
   fullyParallel: true,
@@ -14,7 +25,7 @@ module.exports = defineConfig({
     screenshot: 'only-on-failure',
   },
   webServer: {
-    command: 'npx serve . -l 3000 -s',
+    command: 'npx serve . -l 3000',
     port: 3000,
     reuseExistingServer: !process.env.CI,
     timeout: 10000,
