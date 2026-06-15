@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin — Mie Ayam Lariska</title>
-  <meta name="description" content="Dashboard admin untuk mengelola stok menu Mie Ayam Lariska">
+  <meta name="description" content="Dashboard admin untuk mengelola menu Mie Ayam Lariska">
   
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/admin.css">
@@ -14,8 +14,12 @@
   <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   
   <!-- Application Scripts -->
-  <script src="../js/admin-auth.js"></script>
   <script src="../js/firebase-config.js"></script>
+  <script src="../js/menu-service.js"></script>
+  <script src="../js/firebase-connection-service.js"></script>
+  <script src="../js/description-templates.js"></script>
+  <script src="../js/drag-drop-service.js"></script>
+  <script src="../js/admin-auth.js"></script>
 </head>
 <body>
   <div class="admin-dashboard">
@@ -25,46 +29,109 @@
         <h1 class="admin-header__title">Mie Ayam Lariska</h1>
         <span class="admin-header__subtitle">Dashboard Admin</span>
       </div>
-      <button id="logout-button" class="admin-header__logout">Keluar</button>
+      <div class="admin-header__actions">
+        <div class="admin-header__connection">
+          <span id="connection-status" class="connection-status">Menghubungkan...</span>
+          <button id="reconnect-button" class="btn btn--secondary btn--sm" style="display:none;">Hubungkan</button>
+        </div>
+        <button id="logout-button" class="admin-header__logout">Keluar</button>
+      </div>
     </header>
 
     <!-- Main Content -->
     <main class="admin-main">
-      <!-- Status Info -->
-      <div class="admin-status">
-        <p class="admin-status__text">Kelola stok menu Mie Ayam Lariska</p>
-        <p class="admin-status__info">Status: <span id="connection-status">Menghubungkan...</span></p>
+      <!-- Add Menu Button -->
+      <div class="admin-actions">
+        <button id="add-menu-button" class="btn btn--primary">
+          <span>+</span> Tambah Menu
+        </button>
       </div>
 
-      <!-- Stock Management -->
-      <div class="admin-stock">
-        <h2 class="admin-stock__title">Stok Menu</h2>
-        
-        <!-- Mie Ayam -->
-        <div class="admin-stock__category">
-          <h3 class="admin-stock__category-title">Mie Ayam</h3>
-          <div class="admin-stock__grid" id="mie-ayam-grid">
-            <!-- Populated by JavaScript -->
-          </div>
-        </div>
-
-        <!-- Minuman -->
-        <div class="admin-stock__category">
-          <h3 class="admin-stock__category-title">Minuman</h3>
-          <div class="admin-stock__grid" id="minuman-grid">
-            <!-- Populated by JavaScript -->
-          </div>
-        </div>
-
-        <!-- Topping Tambahan -->
-        <div class="admin-stock__category">
-          <h3 class="admin-stock__category-title">Topping Tambahan</h3>
-          <div class="admin-stock__grid" id="topping-grid">
-            <!-- Populated by JavaScript -->
-          </div>
-        </div>
+      <!-- Menu Management -->
+      <div class="admin-menu" id="admin-menu">
+        <!-- Populated by JavaScript -->
       </div>
     </main>
+
+    <!-- Add/Edit Menu Modal -->
+    <div id="menu-modal" class="modal" style="display:none;">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <div class="modal__header">
+          <h2 id="modal-title" class="modal__title">Tambah Menu</h2>
+          <button id="modal-close" class="modal__close">&times;</button>
+        </div>
+        <form id="menu-form" class="modal__form">
+          <input type="hidden" id="menu-id" value="">
+          
+          <div class="form-group">
+            <label for="menu-name" class="form-label">Nama Menu *</label>
+            <input type="text" id="menu-name" class="form-input" placeholder="Contoh: Mie Ayam Special" required>
+            <span id="name-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="menu-category" class="form-label">Kategori *</label>
+            <input type="text" id="menu-category" class="form-input" placeholder="Contoh: Mie Ayam" required list="category-list">
+            <datalist id="category-list">
+              <option value="Mie Ayam">
+              <option value="Minuman">
+              <option value="Topping Tambahan">
+            </datalist>
+            <span id="category-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="menu-price" class="form-label">Harga (Rp) *</label>
+            <input type="number" id="menu-price" class="form-input" placeholder="Contoh: 12000" min="0" required>
+            <span id="price-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="menu-description" class="form-label">Deskripsi</label>
+            <textarea id="menu-description" class="form-input form-textarea" placeholder="Deskripsi menu (maksimal 200 karakter)" maxlength="200" rows="3"></textarea>
+            <div class="form-help">
+              <span id="char-count">0</span>/200 karakter
+              <button type="button" id="auto-generate-btn" class="btn btn--text btn--sm">Auto-generate</button>
+            </div>
+            <span id="description-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="menu-status" class="form-label">Status</label>
+            <select id="menu-status" class="form-input">
+              <option value="available">Tersedia</option>
+              <option value="limited">Terbatas</option>
+              <option value="sold_out">Habis</option>
+            </select>
+          </div>
+          
+          <div class="modal__actions">
+            <button type="button" id="modal-cancel" class="btn btn--secondary">Batal</button>
+            <button type="submit" id="modal-submit" class="btn btn--primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal" style="display:none;">
+      <div class="modal__overlay"></div>
+      <div class="modal__content modal__content--sm">
+        <div class="modal__header">
+          <h2 class="modal__title">Hapus Menu</h2>
+          <button id="delete-modal-close" class="modal__close">&times;</button>
+        </div>
+        <div class="modal__body">
+          <p>Apakah Anda yakin ingin menghapus <strong id="delete-item-name"></strong>?</p>
+          <p class="text-muted">Menu akan dihapus secara permanen dari Firebase.</p>
+        </div>
+        <div class="modal__actions">
+          <button type="button" id="delete-cancel" class="btn btn--secondary">Batal</button>
+          <button type="button" id="delete-confirm" class="btn btn--danger">Hapus</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -74,175 +141,370 @@
       // Check authentication
       AdminAuth.requireAuth();
 
-      // Menu items configuration
-      var MENU_ITEMS = {
-        'mie-ayam-grid': [
-          { id: 'mie_ayam_mini', name: 'Mie Ayam Mini' },
-          { id: 'mie_ayam_biasa', name: 'Mie Ayam Biasa' },
-          { id: 'mie_ayam_pangsit', name: 'Mie Ayam Pangsit' },
-          { id: 'mie_ayam_ceker', name: 'Mie Ayam Ceker' },
-          { id: 'mie_ayam_bakso', name: 'Mie Ayam Bakso' },
-          { id: 'mie_ayam_komplit', name: 'Mie Ayam Komplit' },
-          { id: 'mie_ayam_sayap', name: 'Mie Ayam Sayap' },
-          { id: 'mie_ayam_telur_puyuh', name: 'Mie Ayam Telur Puyuh' },
-          { id: 'mie_ayam_tulangan', name: 'Mie Ayam Tulangan' },
-          { id: 'mie_ayam_kepala', name: 'Mie Ayam Kepala' },
-          { id: 'pangsit_kuah', name: 'Pangsit Kuah' }
-        ],
-        'minuman-grid': [
-          { id: 'teh_anget', name: 'Teh Anget' },
-          { id: 'es_teh_manis', name: 'Es Teh Manis' },
-          { id: 'es_jeruk_peras', name: 'Es Jeruk Peras' },
-          { id: 'es_nutrisari', name: 'Es Nutrisari' },
-          { id: 'es_tawar', name: 'Es Tawar' }
-        ],
-        'topping-grid': [
-          { id: 'ceker', name: 'Ceker' },
-          { id: 'pangsit_rebus', name: 'Pangsit Rebus' },
-          { id: 'bakso', name: 'Bakso' },
-          { id: 'telur_puyuh', name: 'Telur Puyuh' },
-          { id: 'kepala_ayam', name: 'Kepala Ayam' },
-          { id: 'sayap', name: 'Sayap' },
-          { id: 'tulangan', name: 'Tulangan' },
-          { id: 'pangsit_goreng', name: 'Pangsit Goreng' }
-        ]
-      };
+      // State
+      var currentMenuData = {};
+      var currentDeleteId = null;
 
-      // Initialize logout button
-      document.getElementById('logout-button').addEventListener('click', function() {
-        AdminAuth.logout();
+      // Initialize connection service
+      FirebaseConnectionService.init({
+        statusElement: document.getElementById('connection-status'),
+        reconnectButton: document.getElementById('reconnect-button')
       });
 
-      // Create stock item card
-      function createStockCard(item, status) {
-        var card = document.createElement('div');
-        card.className = 'admin-stock__card';
-        card.setAttribute('data-item-id', item.id);
-
-        var name = document.createElement('h4');
-        name.className = 'admin-stock__card-name';
-        name.textContent = item.name;
-
-        var select = document.createElement('select');
-        select.className = 'admin-stock__select';
-        select.setAttribute('data-item-id', item.id);
-
-        var statuses = [
-          { value: 'available', label: 'Tersedia' },
-          { value: 'limited', label: 'Terbatas' },
-          { value: 'sold_out', label: 'Habis' }
-        ];
-
-        statuses.forEach(function(s) {
-          var option = document.createElement('option');
-          option.value = s.value;
-          option.textContent = s.label;
-          if (s.value === status) {
-            option.selected = true;
-          }
-          select.appendChild(option);
+      // Initialize menu data
+      function initMenuData() {
+        FirebaseService.seedInitialMenu().then(function() {
+          console.log('[Admin] Menu data initialized');
+          loadAndRenderMenu();
+        }).catch(function(error) {
+          console.error('[Admin] Error initializing menu:', error);
         });
 
-        select.addEventListener('change', function() {
-          var itemId = this.getAttribute('data-item-id');
-          var newStatus = this.value;
+        // Listen for menu changes
+        FirebaseService.onAllMenuChange(function(data) {
+          currentMenuData = data;
+          renderMenu(data);
+        });
+      }
+
+      // Load and render menu
+      function loadAndRenderMenu() {
+        MenuService.getMenuByCategory().then(function(grouped) {
+          renderMenuByCategory(grouped);
+        });
+      }
+
+      // Render menu grouped by category
+      function renderMenuByCategory(grouped) {
+        var container = document.getElementById('admin-menu');
+        container.innerHTML = '';
+
+        // Get category order from Firebase or default
+        var categories = Object.keys(grouped);
+
+        categories.forEach(function(category) {
+          var items = grouped[category];
           
-          FirebaseService.updateStock(itemId, newStatus).then(function() {
-            console.log('Stock updated:', itemId, newStatus);
-          }).catch(function(error) {
-            console.error('Error updating stock:', error);
-            alert('Gagal mengupdate stok. Silakan coba lagi.');
+          var categorySection = document.createElement('div');
+          categorySection.className = 'admin-menu__category';
+          categorySection.setAttribute('data-category', category);
+
+          var categoryHeader = document.createElement('div');
+          categoryHeader.className = 'admin-menu__category-header';
+          categoryHeader.innerHTML = '<h3 class="admin-menu__category-title">' + category + '</h3>';
+
+          var itemsGrid = document.createElement('div');
+          itemsGrid.className = 'admin-menu__grid';
+
+          items.forEach(function(item) {
+            var card = createMenuCard(item);
+            itemsGrid.appendChild(card);
+          });
+
+          categorySection.appendChild(categoryHeader);
+          categorySection.appendChild(itemsGrid);
+          container.appendChild(categorySection);
+        });
+
+        // Initialize drag-drop for items
+        var grids = container.querySelectorAll('.admin-menu__grid');
+        grids.forEach(function(grid) {
+          if (DragDropService.isMobile()) {
+            DragDropService.initArrowButtons(grid, handleItemReorder);
+          } else {
+            DragDropService.initDragDrop(grid, handleItemReorder);
+          }
+        });
+
+        // Initialize category reordering
+        DragDropService.initCategoryReorder(container, handleCategoryReorder);
+      }
+
+      // Render menu from Firebase data
+      function renderMenu(data) {
+        // Group by category
+        var grouped = {};
+        Object.keys(data).forEach(function(itemId) {
+          var item = data[itemId];
+          var category = item.category || 'Lainnya';
+          
+          if (!grouped[category]) {
+            grouped[category] = [];
+          }
+          
+          grouped[category].push({
+            id: itemId,
+            name: item.name,
+            price: item.price,
+            description: item.description,
+            status: item.status,
+            order: item.order || 0
           });
         });
 
-        card.appendChild(name);
-        card.appendChild(select);
+        // Sort by order within each category
+        Object.keys(grouped).forEach(function(category) {
+          grouped[category].sort(function(a, b) {
+            return a.order - b.order;
+          });
+        });
+
+        renderMenuByCategory(grouped);
+      }
+
+      // Create menu card element
+      function createMenuCard(item) {
+        var card = document.createElement('div');
+        card.className = 'admin-menu__card';
+        card.setAttribute('data-item-id', item.id);
+
+        var statusBadge = document.createElement('span');
+        statusBadge.className = 'badge badge--' + item.status;
+        statusBadge.textContent = FirebaseService.getStatusText(item.status);
+
+        var nameEl = document.createElement('h4');
+        nameEl.className = 'admin-menu__card-name';
+        nameEl.textContent = item.name;
+        nameEl.title = 'Klik untuk edit';
+        nameEl.addEventListener('click', function() {
+          openEditModal(item.id);
+        });
+
+        var priceEl = document.createElement('p');
+        priceEl.className = 'admin-menu__card-price';
+        priceEl.textContent = 'Rp ' + formatPrice(item.price);
+        priceEl.title = 'Klik untuk edit';
+        priceEl.addEventListener('click', function() {
+          openEditModal(item.id);
+        });
+
+        var descEl = document.createElement('p');
+        descEl.className = 'admin-menu__card-desc';
+        descEl.textContent = item.description || '-';
+        descEl.title = 'Klik untuk edit';
+        descEl.addEventListener('click', function() {
+          openEditModal(item.id);
+        });
+
+        var actionsEl = document.createElement('div');
+        actionsEl.className = 'admin-menu__card-actions';
+
+        var editBtn = document.createElement('button');
+        editBtn.className = 'btn btn--text btn--sm';
+        editBtn.textContent = 'Edit';
+        editBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openEditModal(item.id);
+        });
+
+        var deleteBtn = document.createElement('button');
+        deleteBtn.className = 'btn btn--text btn--danger btn--sm';
+        deleteBtn.textContent = 'Hapus';
+        deleteBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          openDeleteModal(item.id, item.name);
+        });
+
+        actionsEl.appendChild(editBtn);
+        actionsEl.appendChild(deleteBtn);
+
+        card.appendChild(statusBadge);
+        card.appendChild(nameEl);
+        card.appendChild(priceEl);
+        card.appendChild(descEl);
+        card.appendChild(actionsEl);
 
         return card;
       }
 
-      // Populate stock grids
-      function populateStockGrids() {
-        Object.keys(MENU_ITEMS).forEach(function(gridId) {
-          var grid = document.getElementById(gridId);
-          if (!grid) return;
+      // Format price
+      function formatPrice(price) {
+        return Number(price).toLocaleString('id-ID');
+      }
 
-          grid.innerHTML = '';
-
-          MENU_ITEMS[gridId].forEach(function(item) {
-            var card = createStockCard(item, 'available');
-            grid.appendChild(card);
-          });
+      // Handle item reorder
+      function handleItemReorder(orderedIds) {
+        MenuService.updateMenuOrder(orderedIds).then(function(result) {
+          if (!result.success) {
+            console.error('Failed to update order:', result.error);
+            alert('Gagal mengupdate urutan: ' + result.error);
+          }
         });
       }
 
-      // Initialize stock data from Firebase
-      function initStockData() {
-        console.log('[Admin] Initializing stock data listener...');
-
-        // Monitor connection status first
-        FirebaseService.db.ref('.info/connected').on('value', function(snapshot) {
-          var connected = snapshot.val();
-          var statusEl = document.getElementById('connection-status');
-          
-          if (connected) {
-            statusEl.textContent = 'Terhubung';
-            statusEl.style.color = '#2E7D32';
-            console.log('[Admin] Connected to Firebase');
-          } else {
-            statusEl.textContent = 'Terputus';
-            statusEl.style.color = '#C40000';
-            console.log('[Admin] Disconnected from Firebase');
-          }
-        });
-
-        // Listen to stock changes
-        FirebaseService.onAllStockChange(function(stockData) {
-          console.log('[Admin] Stock data received:', stockData);
-
-          if (!stockData || Object.keys(stockData).length === 0) {
-            console.log('[Admin] No stock data found, initializing...');
-            initializeStockData();
-            return;
-          }
-
-          updateStockGrids(stockData);
-        });
-      }
-
-      // Update stock grids with data from Firebase
-      function updateStockGrids(stockData) {
-        Object.keys(MENU_ITEMS).forEach(function(gridId) {
-          MENU_ITEMS[gridId].forEach(function(item) {
-            var card = document.querySelector('[data-item-id="' + item.id + '"]');
-            if (!card) return;
-
-            var select = card.querySelector('select');
-            if (!select) return;
-
-            var itemData = stockData[item.id];
-            if (itemData && itemData.status) {
-              select.value = itemData.status;
+      // Handle category reorder
+      function handleCategoryReorder(orderedCategories) {
+        // Update category order in Firebase
+        var updates = {};
+        orderedCategories.forEach(function(category, index) {
+          // Update order for all items in this category
+          Object.keys(currentMenuData).forEach(function(itemId) {
+            if (currentMenuData[itemId].category === category) {
+              updates[itemId + '/categoryOrder'] = index;
             }
           });
         });
-      }
 
-      // Initialize stock data if empty
-      function initializeStockData() {
-        console.log('[Admin] Seeding initial stock data...');
-        
-        FirebaseService.seedInitialStock().then(function() {
-          console.log('[Admin] Stock data initialized successfully');
-        }).catch(function(error) {
-          console.error('[Admin] Error initializing stock:', error);
+        FirebaseService.menuRef.update(updates).catch(function(error) {
+          console.error('Failed to update category order:', error);
         });
       }
 
+      // Open add modal
+      function openAddModal() {
+        document.getElementById('modal-title').textContent = 'Tambah Menu';
+        document.getElementById('menu-id').value = '';
+        document.getElementById('menu-name').value = '';
+        document.getElementById('menu-category').value = '';
+        document.getElementById('menu-price').value = '';
+        document.getElementById('menu-description').value = '';
+        document.getElementById('menu-status').value = 'available';
+        document.getElementById('char-count').textContent = '0';
+        clearErrors();
+        document.getElementById('menu-modal').style.display = 'flex';
+      }
+
+      // Open edit modal
+      function openEditModal(itemId) {
+        var item = currentMenuData[itemId];
+        if (!item) return;
+
+        document.getElementById('modal-title').textContent = 'Edit Menu';
+        document.getElementById('menu-id').value = itemId;
+        document.getElementById('menu-name').value = item.name || '';
+        document.getElementById('menu-category').value = item.category || '';
+        document.getElementById('menu-price').value = item.price || '';
+        document.getElementById('menu-description').value = item.description || '';
+        document.getElementById('menu-status').value = item.status || 'available';
+        document.getElementById('char-count').textContent = (item.description || '').length;
+        clearErrors();
+        document.getElementById('menu-modal').style.display = 'flex';
+      }
+
+      // Open delete modal
+      function openDeleteModal(itemId, itemName) {
+        currentDeleteId = itemId;
+        document.getElementById('delete-item-name').textContent = itemName;
+        document.getElementById('delete-modal').style.display = 'flex';
+      }
+
+      // Close modals
+      function closeModals() {
+        document.getElementById('menu-modal').style.display = 'none';
+        document.getElementById('delete-modal').style.display = 'none';
+        currentDeleteId = null;
+      }
+
+      // Clear form errors
+      function clearErrors() {
+        document.getElementById('name-error').textContent = '';
+        document.getElementById('category-error').textContent = '';
+        document.getElementById('price-error').textContent = '';
+        document.getElementById('description-error').textContent = '';
+      }
+
+      // Show form error
+      function showError(fieldId, message) {
+        document.getElementById(fieldId + '-error').textContent = message;
+      }
+
+      // Handle form submit
+      function handleFormSubmit(e) {
+        e.preventDefault();
+        clearErrors();
+
+        var itemId = document.getElementById('menu-id').value;
+        var data = {
+          name: document.getElementById('menu-name').value,
+          category: document.getElementById('menu-category').value,
+          price: document.getElementById('menu-price').value,
+          description: document.getElementById('menu-description').value,
+          status: document.getElementById('menu-status').value
+        };
+
+        // Validate
+        var validation = MenuService.validateMenuItem(data);
+        if (!validation.valid) {
+          validation.errors.forEach(function(error) {
+            if (error.includes('Nama')) showError('name', error);
+            else if (error.includes('Kategori')) showError('category', error);
+            else if (error.includes('Harga')) showError('price', error);
+            else if (error.includes('Deskripsi')) showError('description', error);
+          });
+          return;
+        }
+
+        // Create or update
+        var promise;
+        if (itemId) {
+          promise = MenuService.updateMenuItem(itemId, data);
+        } else {
+          promise = MenuService.createMenuItem(data);
+        }
+
+        promise.then(function(result) {
+          if (result.success) {
+            closeModals();
+            loadAndRenderMenu();
+          } else {
+            alert('Error: ' + result.error);
+          }
+        });
+      }
+
+      // Handle delete confirm
+      function handleDeleteConfirm() {
+        if (!currentDeleteId) return;
+
+        MenuService.deleteMenuItem(currentDeleteId).then(function(result) {
+          if (result.success) {
+            closeModals();
+            loadAndRenderMenu();
+          } else {
+            alert('Error: ' + result.error);
+          }
+        });
+      }
+
+      // Auto-generate description
+      function handleAutoGenerate() {
+        var name = document.getElementById('menu-name').value;
+        var category = document.getElementById('menu-category').value;
+
+        if (!name) {
+          alert('Isi nama menu terlebih dahulu');
+          return;
+        }
+
+        var description = DescriptionTemplates.generateDescription(name, category, {
+          maxLength: 200
+        });
+
+        document.getElementById('menu-description').value = description;
+        document.getElementById('char-count').textContent = description.length;
+      }
+
+      // Setup event listeners
+      document.getElementById('add-menu-button').addEventListener('click', openAddModal);
+      document.getElementById('modal-close').addEventListener('click', closeModals);
+      document.getElementById('modal-cancel').addEventListener('click', closeModals);
+      document.getElementById('modal-overlay')?.addEventListener('click', closeModals);
+      document.getElementById('menu-form').addEventListener('submit', handleFormSubmit);
+      document.getElementById('delete-modal-close').addEventListener('click', closeModals);
+      document.getElementById('delete-cancel').addEventListener('click', closeModals);
+      document.getElementById('delete-confirm').addEventListener('click', handleDeleteConfirm);
+      document.getElementById('auto-generate-btn').addEventListener('click', handleAutoGenerate);
+      document.getElementById('logout-button').addEventListener('click', function() {
+        AdminAuth.logout();
+      });
+
+      // Character count
+      document.getElementById('menu-description').addEventListener('input', function() {
+        document.getElementById('char-count').textContent = this.value.length;
+      });
+
       // Initialize
-      console.log('[Admin] Initializing dashboard...');
-      populateStockGrids();
-      initStockData();
+      initMenuData();
     })();
   </script>
 </body>

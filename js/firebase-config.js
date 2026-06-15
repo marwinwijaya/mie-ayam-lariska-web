@@ -2,7 +2,7 @@
  * Firebase Configuration for Mie Ayam Lariska
  *
  * Initializes Firebase Realtime Database connection.
- * Provides stock data management functions.
+ * Provides menu data management functions.
  *
  * SECURITY NOTE:
  *   Firebase Realtime Database security rules allow unauthenticated
@@ -49,84 +49,250 @@
   // ---------------------------------------------------------------------------
   firebase.initializeApp(firebaseConfig);
   var db = firebase.database();
-  var stockRef = db.ref('stock');
+  var menuRef = db.ref('menu');
 
   // ---------------------------------------------------------------------------
-  // Initial stock data — all menu items default to "available"
+  // Initial menu data — all menu items with full data structure
   // Item IDs follow slug format: lowercase, underscores for spaces
   // ---------------------------------------------------------------------------
-  var INITIAL_STOCK_DATA = {
+  var INITIAL_MENU_DATA = {
     // Mie Ayam (11 items)
-    'mie_ayam_mini':       { status: 'available' },
-    'mie_ayam_biasa':      { status: 'available' },
-    'mie_ayam_pangsit':    { status: 'available' },
-    'mie_ayam_ceker':      { status: 'available' },
-    'mie_ayam_bakso':      { status: 'available' },
-    'mie_ayam_komplit':    { status: 'available' },
-    'mie_ayam_sayap':      { status: 'available' },
-    'mie_ayam_telur_puyuh':{ status: 'available' },
-    'mie_ayam_tulangan':   { status: 'available' },
-    'mie_ayam_kepala':     { status: 'available' },
-    'pangsit_kuah':        { status: 'available' },
+    'mie_ayam_mini': {
+      name: 'Mie Ayam Mini',
+      category: 'Mie Ayam',
+      price: 5000,
+      description: 'Porsi kecil, pas untuk cemilan. Mie ayam dengan topping ayam suwir yang gurih.',
+      status: 'available',
+      order: 1
+    },
+    'mie_ayam_biasa': {
+      name: 'Mie Ayam Biasa',
+      category: 'Mie Ayam',
+      price: 10000,
+      description: 'Mie ayam klasik dengan topping ayam suwir, pangsit rebus, dan sayuran segar.',
+      status: 'available',
+      order: 2
+    },
+    'mie_ayam_pangsit': {
+      name: 'Mie Ayam Pangsit',
+      category: 'Mie Ayam',
+      price: 12000,
+      description: 'Mie ayam dengan pangsit goreng renyah dan pangsit rebus yang lembut.',
+      status: 'available',
+      order: 3
+    },
+    'mie_ayam_ceker': {
+      name: 'Mie Ayam Ceker',
+      category: 'Mie Ayam',
+      price: 12000,
+      description: 'Mie ayam dengan ceker ayam yang empuk dan bumbu meresap.',
+      status: 'available',
+      order: 4
+    },
+    'mie_ayam_bakso': {
+      name: 'Mie Ayam Bakso',
+      category: 'Mie Ayam',
+      price: 12000,
+      description: 'Mie ayam dengan bakso sapi yang kenyal dan gurih.',
+      status: 'available',
+      order: 5
+    },
+    'mie_ayam_komplit': {
+      name: 'Mie Ayam Komplit',
+      category: 'Mie Ayam',
+      price: 15000,
+      description: 'Mie ayam komplit dengan ceker, pangsit, dan bakso. Porsi kenyang!',
+      status: 'available',
+      order: 6
+    },
+    'mie_ayam_sayap': {
+      name: 'Mie Ayam Sayap',
+      category: 'Mie Ayam',
+      price: 13000,
+      description: 'Mie ayam dengan sayap ayam goreng yang renyah dan gurih.',
+      status: 'available',
+      order: 7
+    },
+    'mie_ayam_telur_puyuh': {
+      name: 'Mie Ayam Telur Puyuh',
+      category: 'Mie Ayam',
+      price: 12000,
+      description: 'Mie ayam dengan telur puyuh yang lembut dan bergizi.',
+      status: 'available',
+      order: 8
+    },
+    'mie_ayam_tulangan': {
+      name: 'Mie Ayam Tulangan',
+      category: 'Mie Ayam',
+      price: 13000,
+      description: 'Mie ayam dengan tulangan ayam yang empuk dan bumbu meresap.',
+      status: 'available',
+      order: 9
+    },
+    'mie_ayam_kepala': {
+      name: 'Mie Ayam Kepala',
+      category: 'Mie Ayam',
+      price: 12000,
+      description: 'Mie ayam dengan kepala ayam yang gurih dan lezat.',
+      status: 'available',
+      order: 10
+    },
+    'pangsit_kuah': {
+      name: 'Pangsit Kuah',
+      category: 'Mie Ayam',
+      price: 10000,
+      description: 'Pangsit rebus dalam kuah kaldu ayam yang hangat dan gurih.',
+      status: 'available',
+      order: 11
+    },
     // Minuman (5 items)
-    'teh_anget':           { status: 'available' },
-    'es_teh_manis':        { status: 'available' },
-    'es_jeruk_peras':      { status: 'available' },
-    'es_nutrisari':        { status: 'available' },
-    'es_tawar':            { status: 'available' },
+    'teh_anget': {
+      name: 'Teh Anget',
+      category: 'Minuman',
+      price: 2000,
+      description: 'Teh hangat manis, pas untuk menemani makan mie ayam.',
+      status: 'available',
+      order: 12
+    },
+    'es_teh_manis': {
+      name: 'Es Teh Manis',
+      category: 'Minuman',
+      price: 3000,
+      description: 'Es teh manis segar, cocok untuk cuaca panas.',
+      status: 'available',
+      order: 13
+    },
+    'es_jeruk_peras': {
+      name: 'Es Jeruk Peras',
+      category: 'Minuman',
+      price: 4000,
+      description: 'Es jeruk peras segar dengan rasa manis asam yang menyegarkan.',
+      status: 'available',
+      order: 14
+    },
+    'es_nutrisari': {
+      name: 'Es Nutrisari',
+      category: 'Minuman',
+      price: 3000,
+      description: 'Es Nutrisari dengan berbagai rasa buah yang menyegarkan.',
+      status: 'available',
+      order: 15
+    },
+    'es_tawar': {
+      name: 'Es Tawar',
+      category: 'Minuman',
+      price: 1000,
+      description: 'Es tawar segar untuk yang tidak suka manis.',
+      status: 'available',
+      order: 16
+    },
     // Topping Tambahan (8 items)
-    'ceker':               { status: 'available' },
-    'pangsit_rebus':       { status: 'available' },
-    'bakso':               { status: 'available' },
-    'telur_puyuh':         { status: 'available' },
-    'kepala_ayam':         { status: 'available' },
-    'sayap':               { status: 'available' },
-    'tulangan':            { status: 'available' },
-    'pangsit_goreng':      { status: 'available' }
+    'ceker': {
+      name: 'Ceker',
+      category: 'Topping Tambahan',
+      price: 2000,
+      description: 'Ceker ayam empuk dengan bumbu yang meresap.',
+      status: 'available',
+      order: 17
+    },
+    'pangsit_rebus': {
+      name: 'Pangsit Rebus',
+      category: 'Topping Tambahan',
+      price: 2000,
+      description: 'Pangsit rebus dengan isian ayam yang lembut.',
+      status: 'available',
+      order: 18
+    },
+    'bakso': {
+      name: 'Bakso',
+      category: 'Topping Tambahan',
+      price: 2000,
+      description: 'Bakso sapi kenyal dan gurih.',
+      status: 'available',
+      order: 19
+    },
+    'telur_puyuh': {
+      name: 'Telur Puyuh',
+      category: 'Topping Tambahan',
+      price: 2000,
+      description: 'Telur puyuh rebus yang lembut dan bergizi.',
+      status: 'available',
+      order: 20
+    },
+    'kepala_ayam': {
+      name: 'Kepala Ayam',
+      category: 'Topping Tambahan',
+      price: 2000,
+      description: 'Kepala ayam goreng yang gurih dan renyah.',
+      status: 'available',
+      order: 21
+    },
+    'sayap': {
+      name: 'Sayap',
+      category: 'Topping Tambahan',
+      price: 3000,
+      description: 'Sayap ayam goreng yang renyah dan gurih.',
+      status: 'available',
+      order: 22
+    },
+    'tulangan': {
+      name: 'Tulangan',
+      category: 'Topping Tambahan',
+      price: 3000,
+      description: 'Tulangan ayam yang empuk dan bumbu meresap.',
+      status: 'available',
+      order: 23
+    },
+    'pangsit_goreng': {
+      name: 'Pangsit Goreng',
+      category: 'Topping Tambahan',
+      price: 2000,
+      description: 'Pangsit goreng renyah dengan isian ayam.',
+      status: 'available',
+      order: 24
+    }
   };
 
   // ---------------------------------------------------------------------------
-  // Stock management functions
+  // Menu management functions
   // ---------------------------------------------------------------------------
 
   /**
-   * Seed initial stock data to Firebase.
+   * Seed initial menu data to Firebase.
    * Only creates entries that do not already exist — safe to call repeatedly.
    * @returns {Promise<void>}
    */
-  function seedInitialStock() {
-    return stockRef.once('value').then(function (snapshot) {
+  function seedInitialMenu() {
+    return menuRef.once('value').then(function (snapshot) {
       var existingData = snapshot.val();
       var updates = {};
       var hasNewEntries = false;
 
-      Object.keys(INITIAL_STOCK_DATA).forEach(function (itemId) {
+      Object.keys(INITIAL_MENU_DATA).forEach(function (itemId) {
         if (!existingData || !existingData[itemId]) {
-          updates[itemId] = INITIAL_STOCK_DATA[itemId];
+          updates[itemId] = INITIAL_MENU_DATA[itemId];
           hasNewEntries = true;
         }
       });
 
       if (hasNewEntries) {
-        return stockRef.update(updates);
+        return menuRef.update(updates);
       }
     });
   }
 
   /**
-   * Listen to stock changes for a single menu item.
+   * Listen to menu changes for a single menu item.
    * @param {string} itemId   - The menu item ID (slug)
-   * @param {function} callback - Called with the status string
+   * @param {function} callback - Called with the full item data
    * @returns {function} Unsubscribe function
    */
-  function onStockChange(itemId, callback) {
-    var itemRef = stockRef.child(itemId);
+  function onMenuItemChange(itemId, callback) {
+    var itemRef = menuRef.child(itemId);
 
     function handler(snapshot) {
       var data = snapshot.val();
-      // Per spec: null/undefined/missing status => treat as "sold_out"
-      var status = (data && data.status) ? data.status : 'sold_out';
-      callback(status);
+      callback(data);
     }
 
     itemRef.on('value', handler);
@@ -137,91 +303,70 @@
   }
 
   /**
-   * Listen to all stock changes at once.
-   * @param {function} callback - Called with the full stock data object
+   * Listen to all menu changes at once.
+   * @param {function} callback - Called with the full menu data object
    * @returns {function} Unsubscribe function
    */
-  function onAllStockChange(callback) {
+  function onAllMenuChange(callback) {
     function handler(snapshot) {
       var data = snapshot.val() || {};
       callback(data);
     }
 
-    stockRef.on('value', handler);
+    menuRef.on('value', handler);
 
     return function unsubscribe() {
-      stockRef.off('value', handler);
+      menuRef.off('value', handler);
     };
   }
 
   /**
-   * Update stock status for a menu item.
+   * Update a menu item.
    * @param {string} itemId - The menu item ID
-   * @param {string} status - "available" | "limited" | "sold_out"
+   * @param {Object} updates - Object with fields to update
    * @returns {Promise<void>}
    */
-  function updateStock(itemId, status) {
-    return stockRef.child(itemId).set({ status: status });
+  function updateMenuItem(itemId, updates) {
+    return menuRef.child(itemId).update(updates);
   }
 
   /**
-   * Update stock status with automatic retry on failure.
-   * Retries up to maxRetries times with retryDelay ms between attempts.
-   * @param {string}  itemId      - The menu item ID
-   * @param {string}  status      - "available" | "limited" | "sold_out"
-   * @param {number}  [maxRetries=5]   - Maximum retry attempts
-   * @param {number}  [retryDelay=2000] - Delay between retries (ms)
+   * Delete a menu item.
+   * @param {string} itemId - The menu item ID
    * @returns {Promise<void>}
    */
-  function updateStockWithRetry(itemId, status, maxRetries, retryDelay) {
-    maxRetries = maxRetries || 5;
-    retryDelay = retryDelay || 2000;
-
-    function attempt(retriesLeft) {
-      return updateStock(itemId, status).catch(function (error) {
-        if (retriesLeft > 0) {
-          return new Promise(function (resolve) {
-            setTimeout(resolve, retryDelay);
-          }).then(function () {
-            return attempt(retriesLeft - 1);
-          });
-        }
-        throw error;
-      });
-    }
-
-    return attempt(maxRetries);
+  function deleteMenuItem(itemId) {
+    return menuRef.child(itemId).remove();
   }
 
   /**
-   * Get current stock status for a single menu item.
+   * Get a single menu item.
    * @param {string} itemId - The menu item ID
-   * @returns {Promise<string>} Stock status string
+   * @returns {Promise<Object>} Menu item data
    */
-  function getStockStatus(itemId) {
-    return stockRef.child(itemId).once('value').then(function (snapshot) {
-      var data = snapshot.val();
-      return (data && data.status) ? data.status : 'sold_out';
+  function getMenuItem(itemId) {
+    return menuRef.child(itemId).once('value').then(function (snapshot) {
+      return snapshot.val();
     });
   }
 
   /**
-   * Get all stock data.
-   * @returns {Promise<Object>} Full stock data object
+   * Get all menu data.
+   * @returns {Promise<Object>} Full menu data object
    */
-  function getAllStock() {
-    return stockRef.once('value').then(function (snapshot) {
+  function getAllMenu() {
+    return menuRef.once('value').then(function (snapshot) {
       return snapshot.val() || {};
     });
   }
 
   /**
-   * Convert a menu item name to a stock ID (slug format).
+   * Convert a menu item name to a slug ID.
    * "Mie Ayam Komplit" => "mie_ayam_komplit"
    * @param {string} name - Menu item display name
    * @returns {string} Slugified ID
    */
-  function nameToStockId(name) {
+  function nameToSlug(name) {
     return name
       .toLowerCase()
       .replace(/[^a-z0-9\s]/g, '')
@@ -233,27 +378,94 @@
    * @param {string} status - Status to validate
    * @returns {boolean} True if status is one of: available, limited, sold_out
    */
-  function isValidStockStatus(status) {
+  function isValidStatus(status) {
     return ['available', 'limited', 'sold_out'].indexOf(status) !== -1;
+  }
+
+  /**
+   * Get status display text in Indonesian.
+   * @param {string} status - Status string
+   * @returns {string} Display text
+   */
+  function getStatusText(status) {
+    switch (status) {
+      case 'available': return 'Tersedia';
+      case 'limited': return 'Terbatas';
+      case 'sold_out': return 'Habis';
+      default: return 'Tersedia';
+    }
+  }
+
+  // ---------------------------------------------------------------------------
+  // Backward compatibility aliases
+  // ---------------------------------------------------------------------------
+  var stockRef = menuRef; // Alias for backward compatibility
+  var INITIAL_STOCK_DATA = INITIAL_MENU_DATA; // Alias for backward compatibility
+
+  function seedInitialStock() {
+    return seedInitialMenu();
+  }
+
+  function onStockChange(itemId, callback) {
+    return onMenuItemChange(itemId, function (data) {
+      var status = (data && data.status) ? data.status : 'sold_out';
+      callback(status);
+    });
+  }
+
+  function onAllStockChange(callback) {
+    return onAllMenuChange(callback);
+  }
+
+  function updateStock(itemId, status) {
+    return updateMenuItem(itemId, { status: status });
+  }
+
+  function getStockStatus(itemId) {
+    return getMenuItem(itemId).then(function (data) {
+      return (data && data.status) ? data.status : 'sold_out';
+    });
+  }
+
+  function getAllStock() {
+    return getAllMenu();
   }
 
   // ---------------------------------------------------------------------------
   // Expose public API via global namespace
   // ---------------------------------------------------------------------------
   window.FirebaseService = {
+    // Config
     config:               firebaseConfig,
     db:                   db,
-    stockRef:             stockRef,
-    INITIAL_STOCK_DATA:   INITIAL_STOCK_DATA,
+    menuRef:              menuRef,
+    stockRef:             stockRef, // backward compat
+
+    // Data
+    INITIAL_MENU_DATA:    INITIAL_MENU_DATA,
+    INITIAL_STOCK_DATA:   INITIAL_STOCK_DATA, // backward compat
+
+    // Menu functions
+    seedInitialMenu:      seedInitialMenu,
+    onMenuItemChange:     onMenuItemChange,
+    onAllMenuChange:      onAllMenuChange,
+    updateMenuItem:       updateMenuItem,
+    deleteMenuItem:       deleteMenuItem,
+    getMenuItem:          getMenuItem,
+    getAllMenu:            getAllMenu,
+    nameToSlug:           nameToSlug,
+    isValidStatus:        isValidStatus,
+    getStatusText:        getStatusText,
+
+    // Backward compatibility
     seedInitialStock:     seedInitialStock,
     onStockChange:        onStockChange,
     onAllStockChange:     onAllStockChange,
     updateStock:          updateStock,
-    updateStockWithRetry: updateStockWithRetry,
     getStockStatus:       getStockStatus,
     getAllStock:           getAllStock,
-    nameToStockId:        nameToStockId,
-    isValidStockStatus:   isValidStockStatus
+    nameToStockId:        nameToSlug, // alias
+    isValidStockStatus:   isValidStatus // alias
   };
 
 })();
