@@ -16,7 +16,8 @@
         {
           "id": "T1",
           "name": "Firebase Packages API + Service",
-          "status": "WAITING"
+          "status": "DONE",
+          "done_sha": "b59a7e191ee6ffda84112e7d8ebed00623aa072c"
         },
         {
           "id": "T2",

@@ -34,7 +34,7 @@
 
   <!-- ===== NAVIGATION ===== -->
   <nav class="nav" role="navigation" aria-label="Navigasi utama">
-    <div class="nav__brand">Mie Ayam Lariska</div>
+    <a href="/" class="nav__brand">Mie Ayam Lariska</a>
     <button class="nav__toggle" aria-label="Buka menu" aria-expanded="false">
       <span class="nav__toggle-bar"></span>
       <span class="nav__toggle-bar"></span>
@@ -517,91 +517,237 @@
     <div class="container">
       <h2 class="section__title">Paket Rekomendasi</h2>
       <p class="packages__subtitle">Hemat sampai 3rb! Pilih paket yang pas untukmu</p>
-      <div class="packages__grid">
-        <!-- Paket Hemat -->
-        <div class="packages__card">
-          <div class="packages__card-header">
-            <span class="packages__card-icon">🍜</span>
-            <h3 class="packages__card-name">Paket Hemat</h3>
-            <span class="packages__card-tag">Basic</span>
-          </div>
-          <ul class="packages__card-items">
-            <li>Mie Ayam Biasa</li>
-            <li>Es Teh Manis</li>
-          </ul>
-          <div class="packages__card-pricing">
-            <span class="packages__card-original">13k</span>
-            <p class="packages__card-price"><span class="price">13k</span></p>
-            <span class="packages__card-save">Hemat 0k</span>
-          </div>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Hemat" class="btn btn--primary packages__card-btn" target="_blank" rel="noopener">
-            <span>Pesan via WhatsApp</span>
-            <span class="btn__icon">💬</span>
-          </a>
-        </div>
-
-        <!-- Paket Favorit (Popular) -->
-        <div class="packages__card packages__card--popular">
-          <div class="packages__card-badge">⭐ Paling Laris</div>
-          <div class="packages__card-header">
-            <span class="packages__card-icon">🔥</span>
-            <h3 class="packages__card-name">Paket Favorit</h3>
-            <span class="packages__card-tag">Best Seller</span>
-          </div>
-          <ul class="packages__card-items">
-            <li>Mie Ayam Pangsit</li>
-            <li>Es Teh Manis</li>
-          </ul>
-          <div class="packages__card-pricing">
-            <span class="packages__card-original">15k</span>
-            <p class="packages__card-price"><span class="price">15k</span></p>
-            <span class="packages__card-save">Hemat 0k</span>
-          </div>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Favorit" class="btn btn--primary packages__card-btn" target="_blank" rel="noopener">
-            <span>Pesan via WhatsApp</span>
-            <span class="btn__icon">💬</span>
-          </a>
-        </div>
-
-        <!-- Paket Kenyang -->
-        <div class="packages__card">
-          <div class="packages__card-header">
-            <span class="packages__card-icon">😋</span>
-            <h3 class="packages__card-name">Paket Kenyang</h3>
-            <span class="packages__card-tag">Puas</span>
-          </div>
-          <ul class="packages__card-items">
-            <li>Mie Ayam Komplit</li>
-            <li>Es Teh Manis</li>
-          </ul>
-          <div class="packages__card-pricing">
-            <span class="packages__card-original">18k</span>
-            <p class="packages__card-price"><span class="price">18k</span></p>
-            <span class="packages__card-save">Hemat 0k</span>
-          </div>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Kenyang" class="btn btn--primary packages__card-btn" target="_blank" rel="noopener">
-            <span>Pesan via WhatsApp</span>
-            <span class="btn__icon">💬</span>
-          </a>
-        </div>
-
-        <!-- Paket Topping -->
-        <div class="packages__card packages__card--custom">
-          <div class="packages__card-header">
-            <span class="packages__card-icon">✨</span>
-            <h3 class="packages__card-name">Topping Suka-Suka</h3>
-            <span class="packages__card-tag">Custom</span>
-          </div>
-          <p class="packages__card-description">Pilih mie ayam favoritmu, lalu tambah topping sesuai selera!</p>
-          <div class="packages__card-pricing">
-            <p class="packages__card-price"><span class="price">+2k</span><span class="packages__card-price-note">/topping</span></p>
-          </div>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Topping%20Suka-Suka" class="btn btn--secondary packages__card-btn" target="_blank" rel="noopener">
-            <span>Buat Paket Sendiri</span>
-            <span class="btn__icon">🎨</span>
-          </a>
-        </div>
+      <div class="packages__grid" id="packages-container">
+        <!-- Rendered dynamically from Firebase -->
       </div>
+
+      <script>
+      (function() {
+        'use strict';
+
+        var FALLBACK_PACKAGES = {
+          'paket_hemat': {
+            name: 'Paket Hemat',
+            description: 'Mie Ayam Biasa + Es Teh Manis',
+            icon: '🍜',
+            items: ['mie_ayam_biasa', 'es_teh_manis'],
+            itemNames: ['Mie Ayam Biasa', 'Es Teh Manis'],
+            price: 13000,
+            tag: 'Basic',
+            isFeatured: false,
+            isActive: true,
+            whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Hemat',
+            order: 1
+          },
+          'paket_favorit': {
+            name: 'Paket Favorit',
+            description: 'Mie Ayam Pangsit + Es Teh Manis',
+            icon: '🔥',
+            items: ['mie_ayam_pangsit', 'es_teh_manis'],
+            itemNames: ['Mie Ayam Pangsit', 'Es Teh Manis'],
+            price: 15000,
+            tag: 'Best Seller',
+            isFeatured: true,
+            isActive: true,
+            whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Favorit',
+            order: 2
+          },
+          'paket_kenyang': {
+            name: 'Paket Kenyang',
+            description: 'Mie Ayam Komplit + Es Teh Manis',
+            icon: '😋',
+            items: ['mie_ayam_komplit', 'es_teh_manis'],
+            itemNames: ['Mie Ayam Komplit', 'Es Teh Manis'],
+            price: 18000,
+            tag: 'Puas',
+            isFeatured: false,
+            isActive: true,
+            whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Kenyang',
+            order: 3
+          },
+          'topping_suka_suka': {
+            name: 'Topping Suka-Suka',
+            description: 'Pilih mie ayam favoritmu, lalu tambah topping sesuai selera!',
+            icon: '✨',
+            items: [],
+            itemNames: [],
+            price: 2000,
+            tag: 'Custom',
+            isFeatured: false,
+            isActive: true,
+            whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Topping Suka-Suka',
+            order: 4
+          }
+        };
+
+        var container = document.getElementById('packages-container');
+        if (!container) return;
+
+        function escapeHtml(str) {
+          var div = document.createElement('div');
+          div.appendChild(document.createTextNode(str));
+          return div.innerHTML;
+        }
+
+        function resolveItemNames(pkg, menuData) {
+          if (pkg.itemNames && pkg.itemNames.length > 0) return pkg.itemNames;
+          if (!menuData || !pkg.items) return [];
+          return pkg.items.map(function(id) {
+            return (menuData[id] && menuData[id].name) ? menuData[id].name : id;
+          });
+        }
+
+        function buildWhatsAppLink(pkg) {
+          var msg = pkg.whatsappMessage || 'Halo Mie Ayam Lariska, saya mau pesan ' + pkg.name;
+          return 'https://wa.me/6281364856560?text=' + encodeURIComponent(msg);
+        }
+
+        function renderPackages(packagesData, menuData) {
+          var activePackages = [];
+          Object.keys(packagesData).forEach(function(id) {
+            var pkg = packagesData[id];
+            if (pkg && pkg.isActive) {
+              activePackages.push({ id: id, data: pkg });
+            }
+          });
+
+          activePackages.sort(function(a, b) {
+            return (a.data.order || 99) - (b.data.order || 99);
+          });
+
+          var featured = null;
+          var regular = [];
+
+          activePackages.forEach(function(entry) {
+            if (entry.data.isFeatured) {
+              featured = entry;
+            } else {
+              regular.push(entry);
+            }
+          });
+
+          var html = '';
+
+          function renderCard(entry) {
+            var pkg = entry.data;
+            var isFeatured = pkg.isFeatured;
+            var cardClass = isFeatured ? 'packages__card packages__card--featured' : 'packages__card';
+            var itemNames = resolveItemNames(pkg, menuData);
+            var waLink = buildWhatsAppLink(pkg);
+            var priceK = Math.round(pkg.price / 1000);
+            var isTopping = entry.id === 'topping_suka_suka';
+
+            html += '<div class="' + cardClass + '">';
+
+            if (isFeatured) {
+              html += '<div class="packages__card-badge">⭐ Paling Laris</div>';
+            }
+
+            html += '<div class="packages__card-header">';
+            html += '<span class="packages__card-icon">' + escapeHtml(pkg.icon || '') + '</span>';
+            html += '<h3 class="packages__card-name">' + escapeHtml(pkg.name) + '</h3>';
+            html += '<span class="packages__card-tag">' + escapeHtml(pkg.tag || '') + '</span>';
+            html += '</div>';
+
+            if (itemNames.length > 0) {
+              html += '<ul class="packages__card-items">';
+              itemNames.forEach(function(item) {
+                html += '<li>' + escapeHtml(item) + '</li>';
+              });
+              html += '</ul>';
+            } else if (pkg.description) {
+              html += '<p class="packages__card-description">' + escapeHtml(pkg.description) + '</p>';
+            }
+
+            html += '<div class="packages__card-pricing">';
+            if (isTopping) {
+              html += '<p class="packages__card-price"><span class="price">+' + priceK + 'k</span><span class="packages__card-price-note">/topping</span></p>';
+            } else {
+              html += '<p class="packages__card-price"><span class="price">' + priceK + 'k</span></p>';
+              html += '<span class="packages__badge--lengkap">Lengkap</span>';
+            }
+            html += '</div>';
+
+            html += '<a href="' + waLink + '" class="btn ' + (isTopping ? 'btn--secondary' : 'btn--primary') + ' packages__card-btn" target="_blank" rel="noopener">';
+            if (isTopping) {
+              html += '<span>Buat Paket Sendiri</span>';
+              html += '<span class="btn__icon">🎨</span>';
+            } else {
+              html += '<span>Pesan via WhatsApp</span>';
+              html += '<span class="btn__icon">💬</span>';
+            }
+            html += '</a>';
+
+            html += '</div>';
+          }
+
+          if (featured) renderCard(featured);
+          regular.forEach(function(entry) { renderCard(entry); });
+
+          container.innerHTML = html;
+        }
+
+        function loadPackages() {
+          if (typeof window.FirebaseService === 'undefined') return false;
+
+          var FS = window.FirebaseService;
+
+          FS.seedInitialPackages().then(function() {
+            return Promise.all([FS.getPackages(), FS.getAllMenu()]);
+          }).then(function(results) {
+            var packagesData = results[0];
+            var menuData = results[1];
+            renderPackages(packagesData, menuData);
+
+            FS.onAllPackagesChange(function(updatedPackages) {
+              FS.getAllMenu().then(function(md) {
+                renderPackages(updatedPackages, md);
+              });
+            });
+          }).catch(function(err) {
+            console.warn('[packages] Firebase error, using fallback:', err);
+            renderPackages(FALLBACK_PACKAGES, null);
+          });
+
+          return true;
+        }
+
+        // Try loading with FirebaseService, with 5s fallback timeout
+        var loaded = false;
+        var fallbackTimer = setTimeout(function() {
+          if (!loaded) {
+            console.warn('[packages] FirebaseService timeout, rendering fallback');
+            renderPackages(FALLBACK_PACKAGES, null);
+          }
+        }, 5000);
+
+        function attemptLoad() {
+          if (loaded) return;
+          loaded = loadPackages();
+          if (loaded) clearTimeout(fallbackTimer);
+        }
+
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', attemptLoad);
+        } else {
+          attemptLoad();
+        }
+
+        // Also listen for FirebaseService ready event
+        window.addEventListener('FirebaseServiceReady', attemptLoad);
+
+        // Poll for FirebaseService in case it loads after DOMContentLoaded
+        var pollCount = 0;
+        var pollInterval = setInterval(function() {
+          pollCount++;
+          if (loaded || pollCount > 50) {
+            clearInterval(pollInterval);
+            return;
+          }
+          attemptLoad();
+        }, 100);
+      })();
+      </script>
     </div>
   </section>
 

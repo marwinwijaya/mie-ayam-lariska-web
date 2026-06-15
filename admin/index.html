@@ -47,16 +47,56 @@
 
     <!-- Main Content -->
     <main class="admin-main">
-      <!-- Add Menu Button -->
-      <div class="admin-actions">
-        <button id="add-menu-button" class="btn btn--primary">
-          <span>+</span> Tambah Menu
-        </button>
+      <!-- Tab Navigation -->
+      <div class="admin-tabs">
+        <button id="tab-menu" class="admin-tabs__btn admin-tabs__btn--active" data-tab="menu">Menu</button>
+        <button id="tab-packages" class="admin-tabs__btn" data-tab="packages">Paket</button>
       </div>
 
-      <!-- Menu Management -->
-      <div class="admin-menu" id="admin-menu">
-        <!-- Populated by JavaScript -->
+      <!-- Menu Tab Content -->
+      <div id="tab-content-menu" class="admin-tab-content">
+        <!-- Add Menu Button -->
+        <div class="admin-actions">
+          <button id="add-menu-button" class="btn btn--primary">
+            <span>+</span> Tambah Menu
+          </button>
+        </div>
+
+        <!-- Menu Management -->
+        <div class="admin-menu" id="admin-menu">
+          <!-- Populated by JavaScript -->
+        </div>
+      </div>
+
+      <!-- Packages Tab Content -->
+      <div id="tab-content-packages" class="admin-tab-content" style="display:none;">
+        <!-- Add Package Button -->
+        <div class="admin-actions">
+          <button id="add-package-button" class="btn btn--primary">
+            <span>+</span> Tambah Paket
+          </button>
+        </div>
+
+        <!-- Packages Table -->
+        <div class="packages-table-container">
+          <table class="packages-table">
+            <thead>
+              <tr>
+                <th>Icon</th>
+                <th>Nama</th>
+                <th>Harga</th>
+                <th>Items</th>
+                <th>Tag</th>
+                <th>Featured</th>
+                <th>Status</th>
+                <th>Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="packages-table-body">
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
+        </div>
       </div>
     </main>
 
@@ -188,6 +228,113 @@
         </div>
       </div>
     </div>
+
+    <!-- Add/Edit Package Modal -->
+    <div id="package-modal" class="modal" style="display:none;">
+      <div class="modal__overlay"></div>
+      <div class="modal__content">
+        <div class="modal__header">
+          <h2 id="package-modal-title" class="modal__title">Tambah Paket</h2>
+          <button id="package-modal-close" class="modal__close">&times;</button>
+        </div>
+        <form id="package-form" class="modal__form">
+          <input type="hidden" id="package-id" value="">
+          
+          <div class="form-group">
+            <label for="package-name" class="form-label">Nama Paket *</label>
+            <input type="text" id="package-name" class="form-input" placeholder="Contoh: Paket Hemat" required>
+            <span id="package-name-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="package-description" class="form-label">Deskripsi *</label>
+            <textarea id="package-description" class="form-input form-textarea" placeholder="Deskripsi paket" required rows="3"></textarea>
+            <span id="package-description-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="package-icon" class="form-label">Icon (Emoji) *</label>
+            <input type="text" id="package-icon" class="form-input" placeholder="Contoh: 🍜" required maxlength="4">
+            <span id="package-icon-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">Items dalam Paket</label>
+            <div id="package-items-checkboxes" class="package-items-list">
+              <!-- Populated by JavaScript -->
+            </div>
+            <span class="form-help">Pilih menu yang termasuk dalam paket ini</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="package-price" class="form-label">Harga (Rp) *</label>
+            <input type="number" id="package-price" class="form-input" placeholder="Contoh: 13000" min="0" required>
+            <span id="package-price-error" class="form-error"></span>
+          </div>
+          
+          <div class="form-group">
+            <label for="package-tag" class="form-label">Tag</label>
+            <select id="package-tag" class="form-input">
+              <option value="Basic">Basic</option>
+              <option value="Best Seller">Best Seller</option>
+              <option value="Puas">Puas</option>
+              <option value="Custom">Custom</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label class="form-label">
+              <input type="checkbox" id="package-featured" class="form-checkbox">
+              Jadikan Featured (hanya 1 yang bisa aktif)
+            </label>
+            <span class="form-help">Paket featured akan tampil dengan highlight di halaman utama</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="package-status" class="form-label">Status</label>
+            <select id="package-status" class="form-input">
+              <option value="true">Aktif</option>
+              <option value="false">Nonaktif</option>
+            </select>
+          </div>
+          
+          <div class="form-group">
+            <label for="package-order" class="form-label">Urutan</label>
+            <input type="number" id="package-order" class="form-input" placeholder="Contoh: 1" min="0">
+            <span class="form-help">Urutan tampilan paket (angka kecil tampil duluan)</span>
+          </div>
+          
+          <div class="form-group">
+            <label for="package-whatsapp" class="form-label">Pesan WhatsApp</label>
+            <input type="text" id="package-whatsapp" class="form-input" placeholder="Contoh: Halo, saya mau pesan Paket Hemat">
+          </div>
+          
+          <div class="modal__actions">
+            <button type="button" id="package-modal-cancel" class="btn btn--secondary">Batal</button>
+            <button type="submit" id="package-modal-submit" class="btn btn--primary">Simpan</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Delete Package Confirmation Modal -->
+    <div id="package-delete-modal" class="modal" style="display:none;">
+      <div class="modal__overlay"></div>
+      <div class="modal__content modal__content--sm">
+        <div class="modal__header">
+          <h2 class="modal__title">Hapus Paket</h2>
+          <button id="package-delete-modal-close" class="modal__close">&times;</button>
+        </div>
+        <div class="modal__body">
+          <p>Apakah Anda yakin ingin menghapus <strong id="package-delete-name"></strong>?</p>
+          <p class="text-muted">Paket akan dihapus secara permanen dari Firebase.</p>
+        </div>
+        <div class="modal__actions">
+          <button type="button" id="package-delete-cancel" class="btn btn--secondary">Batal</button>
+          <button type="button" id="package-delete-confirm" class="btn btn--danger">Hapus</button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -199,7 +346,9 @@
 
       // State
       var currentMenuData = {};
+      var currentPackagesData = {};
       var currentDeleteId = null;
+      var currentPackageDeleteId = null;
 
       // Initialize connection service
       FirebaseConnectionService.init({
@@ -216,10 +365,24 @@
           console.error('[Admin] Error initializing menu:', error);
         });
 
+        // Seed packages data
+        FirebaseService.seedInitialPackages().then(function() {
+          console.log('[Admin] Packages data initialized');
+          loadAndRenderPackages();
+        }).catch(function(error) {
+          console.error('[Admin] Error initializing packages:', error);
+        });
+
         // Listen for menu changes
         FirebaseService.onAllMenuChange(function(data) {
           currentMenuData = data;
           renderMenu(data);
+        });
+
+        // Listen for packages changes
+        FirebaseService.onAllPackagesChange(function(data) {
+          currentPackagesData = data;
+          renderPackagesTable(data);
         });
       }
 
