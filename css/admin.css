@@ -317,6 +317,41 @@
   color: var(--color-text);
 }
 
+.admin-menu__card-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  margin-bottom: var(--space-sm);
+}
+
+.admin-menu__card-badge--favorit {
+  background-color: #FFF3CD;
+  color: #856404;
+  border: 1px solid #FFD700;
+}
+
+.admin-menu__card-badge--baru {
+  background-color: #D4EDDA;
+  color: #155724;
+  border: 1px solid #28A745;
+}
+
+.admin-menu__card-badge--bestseller {
+  background-color: #F8D7DA;
+  color: #721C24;
+  border: 1px solid #DC3545;
+}
+
+.admin-menu__card-badge--populer {
+  background-color: #CCE5FF;
+  color: #004085;
+  border: 1px solid #007BFF;
+}
+
 .admin-menu__card-actions {
   display: flex;
   gap: var(--space-sm);

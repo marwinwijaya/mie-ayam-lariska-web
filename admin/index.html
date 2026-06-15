@@ -133,6 +133,18 @@
             </select>
           </div>
           
+          <div class="form-group">
+            <label for="menu-badge" class="form-label">Badge Menu</label>
+            <select id="menu-badge" class="form-input">
+              <option value="">Tanpa Badge</option>
+              <option value="favorit">⭐ Favorit</option>
+              <option value="baru">🆕 Baru</option>
+              <option value="bestseller">🔥 Best Seller</option>
+              <option value="populer">📈 Populer</option>
+            </select>
+            <span class="form-help">Badge akan tampil di menu pengunjung</span>
+          </div>
+          
           <div class="modal__actions">
             <button type="button" id="modal-cancel" class="btn btn--secondary">Batal</button>
             <button type="submit" id="modal-submit" class="btn btn--primary">Simpan</button>
@@ -325,6 +337,26 @@
         statusBadge.className = 'badge badge--' + item.status;
         statusBadge.textContent = FirebaseService.getStatusText(item.status);
 
+        // Menu badge (Favorit, Baru, Best Seller, Populer)
+        var menuBadge = null;
+        if (item.badge) {
+          menuBadge = document.createElement('span');
+          menuBadge.className = 'admin-menu__card-badge admin-menu__card-badge--' + item.badge;
+          var badgeIcons = {
+            'favorit': '⭐',
+            'baru': '🆕',
+            'bestseller': '🔥',
+            'populer': '📈'
+          };
+          var badgeLabels = {
+            'favorit': 'Favorit',
+            'baru': 'Baru',
+            'bestseller': 'Best Seller',
+            'populer': 'Populer'
+          };
+          menuBadge.textContent = (badgeIcons[item.badge] || '') + ' ' + (badgeLabels[item.badge] || item.badge);
+        }
+
         var nameEl = document.createElement('h4');
         nameEl.className = 'admin-menu__card-name';
         nameEl.textContent = item.name;
@@ -374,6 +406,9 @@
         card.appendChild(rankBadge);
         card.appendChild(imageContainer);
         card.appendChild(statusBadge);
+        if (menuBadge) {
+          card.appendChild(menuBadge);
+        }
         card.appendChild(nameEl);
         card.appendChild(priceEl);
         card.appendChild(descEl);
@@ -442,6 +477,7 @@
         document.getElementById('menu-price').value = item.price || '';
         document.getElementById('menu-description').value = item.description || '';
         document.getElementById('menu-status').value = item.status || 'available';
+        document.getElementById('menu-badge').value = item.badge || '';
         document.getElementById('char-count').textContent = (item.description || '').length;
         clearErrors();
         imageUpload.reset();
@@ -486,7 +522,8 @@
           category: document.getElementById('menu-category').value,
           price: document.getElementById('menu-price').value,
           description: document.getElementById('menu-description').value,
-          status: document.getElementById('menu-status').value
+          status: document.getElementById('menu-status').value,
+          badge: document.getElementById('menu-badge').value || null
         };
 
         // Validate

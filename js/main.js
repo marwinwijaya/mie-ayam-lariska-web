@@ -287,6 +287,77 @@
   }
 
   // ---------------------------------------------------------------------------
+  // Menu Badges
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Badge configuration
+   */
+  var BADGE_CONFIG = {
+    'favorit': { icon: '⭐', label: 'Favorit', class: 'favorit' },
+    'baru': { icon: '🆕', label: 'Baru', class: 'baru' },
+    'bestseller': { icon: '🔥', label: 'Best Seller', class: 'bestseller' },
+    'populer': { icon: '📈', label: 'Populer', class: 'populer' }
+  };
+
+  /**
+   * Update menu badge on visitor page
+   */
+  function updateMenuBadge(name, badge) {
+    var cards = document.querySelectorAll('.menu__item-card');
+
+    cards.forEach(function (card) {
+      var nameEl = card.querySelector('.menu__item-name');
+      if (!nameEl || nameEl.textContent.trim() !== name) return;
+
+      // Remove existing menu badge
+      var existingBadge = card.querySelector('.menu__item-badge');
+      if (existingBadge) {
+        existingBadge.remove();
+      }
+
+      // Add badge if exists
+      if (badge && BADGE_CONFIG[badge]) {
+        var imageContainer = card.querySelector('.menu__item-image');
+        if (imageContainer) {
+          var badgeEl = document.createElement('span');
+          badgeEl.className = 'menu__item-badge menu__item-badge--' + BADGE_CONFIG[badge].class;
+          badgeEl.textContent = BADGE_CONFIG[badge].icon + ' ' + BADGE_CONFIG[badge].label;
+          imageContainer.appendChild(badgeEl);
+        }
+      }
+    });
+  }
+
+  /**
+   * Initialize menu badge updates from Firebase
+   */
+  function initBadgeUpdates() {
+    if (typeof window.FirebaseService === 'undefined') {
+      console.warn('[Main] FirebaseService not available. Badge updates disabled.');
+      return;
+    }
+
+    var FirebaseService = window.FirebaseService;
+
+    // Listen to all menu changes
+    FirebaseService.menuRef.on('value', function (snapshot) {
+      var menuData = snapshot.val();
+      if (!menuData) return;
+
+      console.log('[Main] Menu data updated for badges');
+
+      // Update badges for each menu item
+      Object.keys(menuData).forEach(function (itemId) {
+        var item = menuData[itemId];
+        if (item.name && item.badge) {
+          updateMenuBadge(item.name, item.badge);
+        }
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------------------
   // Menu Images
   // ---------------------------------------------------------------------------
 
@@ -516,6 +587,7 @@
     // Delay Firebase initialization slightly to ensure SDK is loaded
     setTimeout(function () {
       initStockUpdates();
+      initBadgeUpdates();
     }, 100);
 
     console.log('[Main] App initialized successfully');

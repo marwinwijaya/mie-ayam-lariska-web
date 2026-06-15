@@ -164,6 +164,7 @@
           price: Number(data.price),
           description: data.description ? data.description.trim() : '',
           status: data.status || 'available',
+          badge: data.badge || null,
           order: maxOrder + 1
         };
 
@@ -322,6 +323,7 @@
           price: item.price,
           description: item.description,
           status: item.status,
+          badge: item.badge || null,
           order: item.order || 0
         });
       });
@@ -359,6 +361,7 @@
           price: item.price,
           description: item.description,
           status: item.status,
+          badge: item.badge || null,
           order: item.order || 0
         });
       });

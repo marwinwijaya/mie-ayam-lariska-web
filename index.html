@@ -479,39 +479,90 @@
   <section data-section="packages" class="packages" id="packages">
     <div class="container">
       <h2 class="section__title">Paket Rekomendasi</h2>
+      <p class="packages__subtitle">Hemat sampai 3rb! Pilih paket yang pas untukmu</p>
       <div class="packages__grid">
+        <!-- Paket Hemat -->
         <div class="packages__card">
-          <h3 class="packages__card-name">Paket Hemat</h3>
+          <div class="packages__card-header">
+            <span class="packages__card-icon">🍜</span>
+            <h3 class="packages__card-name">Paket Hemat</h3>
+            <span class="packages__card-tag">Basic</span>
+          </div>
           <ul class="packages__card-items">
             <li>Mie Ayam Biasa</li>
             <li>Es Teh Manis</li>
           </ul>
-          <p class="packages__card-price">Mulai dari <span class="price">13k</span></p>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Hemat" class="btn btn--primary" target="_blank" rel="noopener">Pesan Paket Ini</a>
+          <div class="packages__card-pricing">
+            <span class="packages__card-original">13k</span>
+            <p class="packages__card-price"><span class="price">13k</span></p>
+            <span class="packages__card-save">Hemat 0k</span>
+          </div>
+          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Hemat" class="btn btn--primary packages__card-btn" target="_blank" rel="noopener">
+            <span>Pesan via WhatsApp</span>
+            <span class="btn__icon">💬</span>
+          </a>
         </div>
-        <div class="packages__card">
-          <h3 class="packages__card-name">Paket Favorit</h3>
+
+        <!-- Paket Favorit (Popular) -->
+        <div class="packages__card packages__card--popular">
+          <div class="packages__card-badge">⭐ Paling Laris</div>
+          <div class="packages__card-header">
+            <span class="packages__card-icon">🔥</span>
+            <h3 class="packages__card-name">Paket Favorit</h3>
+            <span class="packages__card-tag">Best Seller</span>
+          </div>
           <ul class="packages__card-items">
             <li>Mie Ayam Pangsit</li>
             <li>Es Teh Manis</li>
           </ul>
-          <p class="packages__card-price">Mulai dari <span class="price">15k</span></p>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Favorit" class="btn btn--primary" target="_blank" rel="noopener">Pesan Paket Ini</a>
+          <div class="packages__card-pricing">
+            <span class="packages__card-original">15k</span>
+            <p class="packages__card-price"><span class="price">15k</span></p>
+            <span class="packages__card-save">Hemat 0k</span>
+          </div>
+          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Favorit" class="btn btn--primary packages__card-btn" target="_blank" rel="noopener">
+            <span>Pesan via WhatsApp</span>
+            <span class="btn__icon">💬</span>
+          </a>
         </div>
+
+        <!-- Paket Kenyang -->
         <div class="packages__card">
-          <h3 class="packages__card-name">Paket Kenyang</h3>
+          <div class="packages__card-header">
+            <span class="packages__card-icon">😋</span>
+            <h3 class="packages__card-name">Paket Kenyang</h3>
+            <span class="packages__card-tag">Puas</span>
+          </div>
           <ul class="packages__card-items">
             <li>Mie Ayam Komplit</li>
             <li>Es Teh Manis</li>
           </ul>
-          <p class="packages__card-price">Mulai dari <span class="price">18k</span></p>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Kenyang" class="btn btn--primary" target="_blank" rel="noopener">Pesan Paket Ini</a>
+          <div class="packages__card-pricing">
+            <span class="packages__card-original">18k</span>
+            <p class="packages__card-price"><span class="price">18k</span></p>
+            <span class="packages__card-save">Hemat 0k</span>
+          </div>
+          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Kenyang" class="btn btn--primary packages__card-btn" target="_blank" rel="noopener">
+            <span>Pesan via WhatsApp</span>
+            <span class="btn__icon">💬</span>
+          </a>
         </div>
-        <div class="packages__card">
-          <h3 class="packages__card-name">Paket Topping Suka-Suka</h3>
-          <p class="packages__card-description">Pilih mie ayam favoritmu, lalu tambah topping sesuai selera mulai dari 2k.</p>
-          <p class="packages__card-price">Topping mulai dari <span class="price">2k</span></p>
-          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Topping%20Suka-Suka" class="btn btn--primary" target="_blank" rel="noopener">Pesan Paket Ini</a>
+
+        <!-- Paket Topping -->
+        <div class="packages__card packages__card--custom">
+          <div class="packages__card-header">
+            <span class="packages__card-icon">✨</span>
+            <h3 class="packages__card-name">Topping Suka-Suka</h3>
+            <span class="packages__card-tag">Custom</span>
+          </div>
+          <p class="packages__card-description">Pilih mie ayam favoritmu, lalu tambah topping sesuai selera!</p>
+          <div class="packages__card-pricing">
+            <p class="packages__card-price"><span class="price">+2k</span><span class="packages__card-price-note">/topping</span></p>
+          </div>
+          <a href="https://wa.me/6281364856560?text=Halo%20Mie%20Ayam%20Lariska%2C%20saya%20mau%20pesan%20Paket%20Topping%20Suka-Suka" class="btn btn--secondary packages__card-btn" target="_blank" rel="noopener">
+            <span>Buat Paket Sendiri</span>
+            <span class="btn__icon">🎨</span>
+          </a>
         </div>
       </div>
     </div>
