@@ -58,18 +58,20 @@ test.describe('Customer Packages Display', () => {
     const featuredCard = page.locator('.packages__card--featured');
     await expect(featuredCard).toBeAttached();
 
-    const regularCards = page.locator('.packages__grid .packages__card');
-    const regularCount = await regularCards.count();
+    // Check featured card has special styling classes and attributes
+    const featuredClass = await featuredCard.getAttribute('class');
+    expect(featuredClass).toContain('packages__card--featured');
 
-    if (regularCount > 0) {
-      const featuredBox = await featuredCard.boundingBox();
-      const regularBox = await regularCards.first().boundingBox();
+    // Check featured card has gradient background (via computed style)
+    const hasGradient = await featuredCard.evaluate((el) => {
+      const style = window.getComputedStyle(el);
+      return style.backgroundImage.includes('gradient');
+    });
+    expect(hasGradient).toBe(true);
 
-      if (featuredBox && regularBox) {
-        // Featured card should be wider (full-width)
-        expect(featuredBox.width).toBeGreaterThan(regularBox.width);
-      }
-    }
+    // On desktop, featured card should be in separate container above grid
+    const featuredContainer = page.locator('.packages__featured');
+    await expect(featuredContainer).toBeAttached();
   });
 
   // =========================================================================

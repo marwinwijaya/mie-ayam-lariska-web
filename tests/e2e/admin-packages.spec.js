@@ -14,11 +14,14 @@ async function loginAsAdmin(page) {
 
 test.describe('Admin Packages Management', () => {
   test.beforeEach(async ({ page }) => {
-    // Clear session and login
+    // Navigate to admin login first to establish context
+    await page.goto('/admin/login.html');
+    // Clear session
     await page.evaluate(() => localStorage.removeItem('admin_logged_in'));
+    // Login
     await loginAsAdmin(page);
     // Navigate to admin dashboard if not already there
-    if (!page.url().includes('/admin')) {
+    if (!page.url().includes('/admin/index.html')) {
       await page.goto('/admin/index.html');
     }
     await page.waitForTimeout(2000);
