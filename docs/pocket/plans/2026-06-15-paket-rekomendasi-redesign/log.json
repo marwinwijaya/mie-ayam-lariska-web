@@ -22,8 +22,9 @@
         {
           "id": "T2",
           "name": "Admin Packages CRUD UI",
-          "status": "WAITING",
-          "depends": "T1"
+          "status": "DONE",
+          "depends": "T1",
+          "done_sha": "def83072af0f9f80772952cf02bd644f76035722"
         },
         {
           "id": "T3",

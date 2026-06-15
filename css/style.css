@@ -785,43 +785,30 @@ ul {
   font-weight: 800;
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: var(--space-sm);
   flex-wrap: wrap;
+  width: 100%;
 }
 
 .menu__item-footer {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   margin-top: auto;
   padding-top: var(--space-md);
   border-top: 2px dashed var(--color-border);
 }
 
-.menu__item-order {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #A30000 100%);
-  color: var(--color-button-text);
-  border: none;
-  border-radius: var(--radius-full);
-  padding: 10px 24px;
-  font-size: var(--font-size-sm);
-  font-weight: 700;
-  cursor: pointer;
-  transition: all var(--transition-fast);
-  box-shadow: 0 4px 15px rgba(196, 0, 0, 0.3);
-}
-
-.menu__item-order:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(196, 0, 0, 0.4);
-}
-
 .price {
   color: var(--color-button-text);
   background: linear-gradient(135deg, var(--color-primary) 0%, #A30000 100%);
-  padding: 4px 12px;
+  padding: 6px 20px;
   border-radius: var(--radius-full);
   font-size: var(--font-size-sm);
+  min-width: 60px;
+  text-align: center;
+  display: inline-block;
 }
 
 /* === Stock Badges === */
