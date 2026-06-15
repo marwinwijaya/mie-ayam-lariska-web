@@ -237,6 +237,56 @@
   }
 
   // ---------------------------------------------------------------------------
+  // Menu Images
+  // ---------------------------------------------------------------------------
+
+  /**
+   * Generate slug from menu name
+   */
+  function generateSlug(name) {
+    return name
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, '')
+      .replace(/\s+/g, '-')
+      .replace(/-+/g, '-')
+      .replace(/^-|-$/g, '');
+  }
+
+  /**
+   * Load menu images from images/ folder
+   */
+  function initMenuImages() {
+    var imageContainers = document.querySelectorAll('.menu__item-image');
+    
+    imageContainers.forEach(function(container) {
+      var card = container.closest('.menu__item-card');
+      if (!card) return;
+      
+      var nameEl = card.querySelector('.menu__item-name');
+      if (!nameEl) return;
+      
+      var menuName = nameEl.textContent.trim();
+      var slug = generateSlug(menuName);
+      var imagePath = 'images/' + slug + '.jpg';
+      
+      // Try to load the image
+      var img = new Image();
+      img.onload = function() {
+        // Image exists, replace placeholder
+        container.innerHTML = '';
+        img.alt = menuName;
+        img.className = 'menu__item-img';
+        container.appendChild(img);
+      };
+      img.onerror = function() {
+        // Image doesn't exist, keep placeholder
+        console.log('[Main] No image found for: ' + menuName);
+      };
+      img.src = imagePath;
+    });
+  }
+
+  // ---------------------------------------------------------------------------
   // Smooth Scrolling
   // ---------------------------------------------------------------------------
 
@@ -277,6 +327,7 @@
     initNavigation();
     initFAQ();
     initSmoothScroll();
+    initMenuImages();
 
     // Delay Firebase initialization slightly to ensure SDK is loaded
     setTimeout(function () {

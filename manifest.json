@@ -1,0 +1,18 @@
+{
+  "name": "Mie Ayam Lariska",
+  "short_name": "Lariska",
+  "description": "Mie Ayam Rumahan dengan Topping Lengkap",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#d4380d",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

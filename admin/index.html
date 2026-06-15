@@ -5,6 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard Admin — Mie Ayam Lariska</title>
   <meta name="description" content="Dashboard admin untuk mengelola menu Mie Ayam Lariska">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="manifest" href="../manifest.json">
+  <meta name="theme-color" content="#d4380d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Lariska Admin">
   
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/admin.css">
@@ -19,6 +25,7 @@
   <script src="../js/firebase-connection-service.js"></script>
   <script src="../js/description-templates.js"></script>
   <script src="../js/drag-drop-service.js"></script>
+  <script src="../js/image-upload-service.js"></script>
   <script src="../js/admin-auth.js"></script>
 </head>
 <body>
@@ -95,6 +102,26 @@
               <button type="button" id="auto-generate-btn" class="btn btn--text btn--sm">Auto-generate</button>
             </div>
             <span id="description-error" class="form-error"></span>
+          </div>
+          
+          <!-- Image Upload Section -->
+          <div class="form-group">
+            <label for="menu-image" class="form-label">Foto Menu</label>
+            <div class="image-upload">
+              <input type="file" id="menu-image" accept="image/jpeg,image/png,image/webp" class="image-upload__input">
+              <label for="menu-image" class="image-upload__label">
+                <span class="image-upload__icon">📷</span>
+                <span class="image-upload__text">Pilih foto menu</span>
+                <span class="image-upload__hint">JPG, PNG, atau WebP (maks. 2MB)</span>
+              </label>
+              <div id="image-preview-container" class="image-upload__preview" style="display:none;">
+                <img id="image-preview" src="" alt="Preview" class="image-upload__img">
+              </div>
+              <span id="image-filename" class="image-upload__filename"></span>
+              <button type="button" id="image-download-btn" class="btn btn--secondary btn--sm image-upload__download" style="display:none;">
+                📥 Download Foto (Rename Otomatis)
+              </button>
+            </div>
           </div>
           
           <div class="form-group">
@@ -361,6 +388,7 @@
         document.getElementById('menu-status').value = 'available';
         document.getElementById('char-count').textContent = '0';
         clearErrors();
+        imageUpload.reset();
         document.getElementById('menu-modal').style.display = 'flex';
       }
 
@@ -378,6 +406,7 @@
         document.getElementById('menu-status').value = item.status || 'available';
         document.getElementById('char-count').textContent = (item.description || '').length;
         clearErrors();
+        imageUpload.reset();
         document.getElementById('menu-modal').style.display = 'flex';
       }
 
@@ -483,6 +512,16 @@
         document.getElementById('menu-description').value = description;
         document.getElementById('char-count').textContent = description.length;
       }
+
+      // Initialize Image Upload Service
+      var imageUpload = ImageUploadService.init({
+        fileInput: document.getElementById('menu-image'),
+        preview: document.getElementById('image-preview'),
+        previewContainer: document.getElementById('image-preview-container'),
+        downloadBtn: document.getElementById('image-download-btn'),
+        filenameDisplay: document.getElementById('image-filename'),
+        menuNameInput: document.getElementById('menu-name')
+      });
 
       // Setup event listeners
       document.getElementById('add-menu-button').addEventListener('click', openAddModal);
