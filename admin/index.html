@@ -145,6 +145,23 @@
             <span class="form-help">Badge akan tampil di menu pengunjung</span>
           </div>
           
+          <div class="form-group">
+            <label class="form-label">Posisi Menu</label>
+            <div class="position-control">
+              <select id="menu-position-type" class="form-input">
+                <option value="keep">Tetap (tidak diubah)</option>
+                <option value="first">Pertama</option>
+                <option value="last">Terakhir</option>
+                <option value="before">Sebelum Menu...</option>
+                <option value="after">Setelah Menu...</option>
+              </select>
+              <select id="menu-position-ref" class="form-input" style="display:none;">
+                <!-- Populated dynamically -->
+              </select>
+            </div>
+            <span class="form-help">Ubah posisi menu dalam kategori</span>
+          </div>
+          
           <div class="modal__actions">
             <button type="button" id="modal-cancel" class="btn btn--secondary">Batal</button>
             <button type="submit" id="modal-submit" class="btn btn--primary">Simpan</button>
@@ -459,7 +476,14 @@
         document.getElementById('menu-price').value = '';
         document.getElementById('menu-description').value = '';
         document.getElementById('menu-status').value = 'available';
+        document.getElementById('menu-badge').value = '';
         document.getElementById('char-count').textContent = '0';
+        
+        // Reset position control
+        document.getElementById('menu-position-type').value = 'keep';
+        document.getElementById('menu-position-ref').style.display = 'none';
+        document.getElementById('menu-position-ref').innerHTML = '';
+        
         clearErrors();
         imageUpload.reset();
         document.getElementById('menu-modal').style.display = 'flex';
@@ -479,6 +503,12 @@
         document.getElementById('menu-status').value = item.status || 'available';
         document.getElementById('menu-badge').value = item.badge || '';
         document.getElementById('char-count').textContent = (item.description || '').length;
+        
+        // Reset position control
+        document.getElementById('menu-position-type').value = 'keep';
+        document.getElementById('menu-position-ref').style.display = 'none';
+        document.getElementById('menu-position-ref').innerHTML = '';
+        
         clearErrors();
         imageUpload.reset();
         document.getElementById('menu-modal').style.display = 'flex';
@@ -538,6 +568,10 @@
           return;
         }
 
+        // Handle position change
+        var positionType = document.getElementById('menu-position-type').value;
+        var positionRef = document.getElementById('menu-position-ref').value;
+
         // Create or update
         var promise;
         if (itemId) {
@@ -548,8 +582,59 @@
 
         promise.then(function(result) {
           if (result.success) {
-            closeModals();
-            loadAndRenderMenu();
+            // Handle position change
+            if (positionType !== 'keep' && (itemId || result.itemId)) {
+              var targetId = itemId || result.itemId;
+              var targetCategory = data.category;
+              
+              // Get all items in category
+              MenuService.getMenuByCategory().then(function(grouped) {
+                var categoryItems = grouped[targetCategory] || [];
+                
+                // Calculate new position
+                var newOrder = null;
+                if (positionType === 'first') {
+                  newOrder = 1;
+                } else if (positionType === 'last') {
+                  newOrder = categoryItems.length + 1;
+                } else if ((positionType === 'before' || positionType === 'after') && positionRef) {
+                  var refItem = categoryItems.find(function(item) { return item.id === positionRef; });
+                  if (refItem) {
+                    newOrder = positionType === 'before' ? refItem.order : refItem.order + 1;
+                  }
+                }
+                
+                if (newOrder !== null) {
+                  // Update order for all items
+                  var updates = {};
+                  categoryItems.forEach(function(item) {
+                    if (item.id === targetId) {
+                      updates[item.id + '/order'] = newOrder;
+                    } else if (item.order >= newOrder) {
+                      updates[item.id + '/order'] = item.order + 1;
+                    }
+                  });
+                  
+                  // Also update order for items that need to shift
+                  categoryItems.forEach(function(item) {
+                    if (item.id !== targetId && item.order >= newOrder) {
+                      updates[item.id + '/order'] = item.order + 1;
+                    }
+                  });
+                  
+                  FirebaseService.menuRef.update(updates).then(function() {
+                    closeModals();
+                    loadAndRenderMenu();
+                  });
+                } else {
+                  closeModals();
+                  loadAndRenderMenu();
+                }
+              });
+            } else {
+              closeModals();
+              loadAndRenderMenu();
+            }
           } else {
             alert('Error: ' + result.error);
           }
@@ -616,6 +701,63 @@
       document.getElementById('menu-description').addEventListener('input', function() {
         document.getElementById('char-count').textContent = this.value.length;
       });
+
+      // Position control
+      var positionTypeSelect = document.getElementById('menu-position-type');
+      var positionRefSelect = document.getElementById('menu-position-ref');
+
+      positionTypeSelect.addEventListener('change', function() {
+        var showRef = this.value === 'before' || this.value === 'after';
+        positionRefSelect.style.display = showRef ? 'block' : 'none';
+        
+        if (showRef) {
+          populatePositionRef();
+        }
+      });
+
+      function populatePositionRef() {
+        var category = document.getElementById('menu-category').value;
+        var currentId = document.getElementById('menu-id').value;
+        
+        positionRefSelect.innerHTML = '';
+        
+        if (!category || !currentMenuData) return;
+        
+        // Get items in same category
+        var items = [];
+        Object.keys(currentMenuData).forEach(function(id) {
+          var item = currentMenuData[id];
+          if (item.category === category && id !== currentId) {
+            items.push({ id: id, name: item.name, order: item.order || 0 });
+          }
+        });
+        
+        // Sort by order
+        items.sort(function(a, b) { return a.order - b.order; });
+        
+        // Populate dropdown
+        items.forEach(function(item) {
+          var option = document.createElement('option');
+          option.value = item.id;
+          option.textContent = item.name;
+          positionRefSelect.appendChild(option);
+        });
+      }
+
+      function calculateNewPosition(positionType, refItemId, categoryItems) {
+        if (positionType === 'first') {
+          return 1;
+        } else if (positionType === 'last') {
+          return categoryItems.length + 1;
+        } else if (positionType === 'before' && refItemId) {
+          var refItem = categoryItems.find(function(item) { return item.id === refItemId; });
+          return refItem ? refItem.order : categoryItems.length + 1;
+        } else if (positionType === 'after' && refItemId) {
+          var refItem = categoryItems.find(function(item) { return item.id === refItemId; });
+          return refItem ? refItem.order + 1 : categoryItems.length + 1;
+        }
+        return null;
+      }
 
       // Initialize
       initMenuData();

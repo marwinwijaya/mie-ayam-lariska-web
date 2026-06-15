@@ -352,6 +352,16 @@
   border: 1px solid #007BFF;
 }
 
+.position-control {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.position-control select {
+  width: 100%;
+}
+
 .admin-menu__card-actions {
   display: flex;
   gap: var(--space-sm);
@@ -628,6 +638,6 @@
 
 @media (min-width: 1024px) {
   .admin-menu__grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(4, 1fr);
   }
 }
