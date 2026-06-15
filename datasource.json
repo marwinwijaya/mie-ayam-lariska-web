@@ -1,0 +1,364 @@
+{
+"brand": {
+"name": "Mie Ayam Lariska",
+"tagline": "Mie Ayam Enak, Topping Bisa Mix Suka-Suka",
+"short_description": "Mie Ayam Lariska adalah tempat makan mie ayam rumahan dengan pilihan topping lengkap, rasa gurih, porsi pas, dan harga ramah kantong.",
+"since": 2023,
+"owner": {
+"instagram": "@weniayuch"
+},
+"instagram": "@mieayamlariska"
+},
+"business_info": {
+"opening_hours": {
+"open": "10:00 WIB",
+"close": "Sampai habis",
+"max_close": "18:00 WIB",
+"display_text": "Buka jam 10.00 WIB sampai habis, maksimal jam 18.00 WIB"
+},
+"contact": {
+"whatsapp": "081364856560",
+"phone": "081364856560",
+"order_text": "Pesan via WhatsApp"
+},
+"location": {
+"address": "Masuk Jalan III Pasar Kambing Adijaya, di samping toko Fairamart",
+"maps_name": "Mie Ayam Lariska",
+"maps_url": "https://maps.app.goo.gl/YjTAt7H2YGtyGfvN7"
+}
+},
+"marketing": {
+"hero": {
+"headline": "Mie Ayam Lariska, Mie Ayam Rumahan dengan Topping Lengkap",
+"subheadline": "Nikmati mie ayam hangat dengan banyak pilihan topping seperti ceker, pangsit, bakso, sayap, tulangan, telur puyuh, dan lainnya. Bisa makan langsung atau pesan untuk acara.",
+"primary_cta": {
+"label": "Pesan Sekarang via WhatsApp",
+"type": "whatsapp",
+"value": "081364856560"
+},
+"secondary_cta": {
+"label": "Lihat Lokasi di Maps",
+"type": "maps",
+"value": "https://maps.app.goo.gl/YjTAt7H2YGtyGfvN7"
+}
+},
+"unique_selling_points": [
+"Pilihan mie ayam lengkap",
+"Topping bisa mix sesuai selera",
+"Harga terjangkau mulai dari 5k",
+"Menerima pesanan untuk berbagai acara",
+"Lokasi mudah dicari via Google Maps",
+"Cocok untuk makan sendiri, keluarga, teman, atau rombongan"
+],
+"why_choose_us": [
+{
+"title": "Banyak Pilihan Menu",
+"description": "Dari mie ayam biasa sampai mie ayam komplit, semuanya bisa dipilih sesuai selera."
+},
+{
+"title": "Topping Bisa Mix",
+"description": "Mau tambah ceker, pangsit, bakso, telur puyuh, sayap, atau tulangan? Bisa pilih sesuai selera."
+},
+{
+"title": "Harga Ramah Kantong",
+"description": "Menu mulai dari 5k, cocok untuk pelajar, keluarga, pekerja, dan siapa saja yang ingin makan enak tanpa ribet."
+},
+{
+"title": "Bisa Pesan untuk Acara",
+"description": "Menerima pesanan untuk berbagai acara seperti kumpul keluarga, arisan, syukuran, meeting, dan acara lainnya."
+}
+],
+"event_order": {
+"headline": "Pesan Mie Ayam untuk Acara? Bisa Banget.",
+"description": "Mie Ayam Lariska menerima pesanan untuk berbagai acara. Cocok untuk acara keluarga, kantor, sekolah, pengajian, arisan, dan kumpul bareng.",
+"cta_label": "Hubungi WhatsApp",
+"whatsapp": "081364856560"
+}
+},
+"menu": {
+"mie_ayam": [
+{
+"name": "Mie Ayam Mini",
+"price": 5000,
+"display_price": "5k"
+},
+{
+"name": "Mie Ayam Biasa",
+"price": 10000,
+"display_price": "10k"
+},
+{
+"name": "Mie Ayam Pangsit",
+"price": 12000,
+"display_price": "12k"
+},
+{
+"name": "Mie Ayam Ceker",
+"price": 12000,
+"display_price": "12k"
+},
+{
+"name": "Mie Ayam Bakso",
+"price": 12000,
+"display_price": "12k"
+},
+{
+"name": "Mie Ayam Komplit",
+"price": 15000,
+"display_price": "15k",
+"description": "Isi ceker, pangsit, dan bakso"
+},
+{
+"name": "Mie Ayam Sayap",
+"price": 13000,
+"display_price": "13k"
+},
+{
+"name": "Mie Ayam Telur Puyuh",
+"price": 12000,
+"display_price": "12k"
+},
+{
+"name": "Mie Ayam Tulangan",
+"price": 13000,
+"display_price": "13k"
+},
+{
+"name": "Mie Ayam Kepala",
+"price": 12000,
+"display_price": "12k"
+},
+{
+"name": "Pangsit Kuah",
+"price": 10000,
+"display_price": "10k"
+}
+],
+"minuman": [
+{
+"name": "Teh Anget",
+"price": 2000,
+"display_price": "2k"
+},
+{
+"name": "Es Teh Manis",
+"price": 3000,
+"display_price": "3k"
+},
+{
+"name": "Es Jeruk Peras",
+"price": 4000,
+"display_price": "4k"
+},
+{
+"name": "Es Nutrisari",
+"price": 3000,
+"display_price": "3k"
+},
+{
+"name": "Es Tawar",
+"price": 1000,
+"display_price": "1k"
+}
+],
+"topping_tambahan": [
+{
+"name": "Ceker",
+"price": 2000,
+"display_price": "2k"
+},
+{
+"name": "Pangsit Rebus",
+"price": 2000,
+"display_price": "2k"
+},
+{
+"name": "Bakso",
+"price": 2000,
+"display_price": "2k"
+},
+{
+"name": "Telur Puyuh",
+"price": 2000,
+"display_price": "2k"
+},
+{
+"name": "Kepala Ayam",
+"price": 2000,
+"display_price": "2k"
+},
+{
+"name": "Sayap",
+"price": 3000,
+"display_price": "3k"
+},
+{
+"name": "Tulangan",
+"price": 3000,
+"display_price": "3k"
+},
+{
+"name": "Pangsit Goreng",
+"price": 2000,
+"display_price": "2k"
+}
+]
+},
+"recommended_packages": [
+{
+"name": "Paket Hemat",
+"items": [
+"Mie Ayam Biasa",
+"Es Teh Manis"
+],
+"starting_price": 13000,
+"display_price": "Mulai dari 13k"
+},
+{
+"name": "Paket Favorit",
+"items": [
+"Mie Ayam Pangsit",
+"Es Teh Manis"
+],
+"starting_price": 15000,
+"display_price": "Mulai dari 15k"
+},
+{
+"name": "Paket Kenyang",
+"items": [
+"Mie Ayam Komplit",
+"Es Teh Manis"
+],
+"starting_price": 18000,
+"display_price": "Mulai dari 18k"
+},
+{
+"name": "Paket Topping Suka-Suka",
+"description": "Pilih mie ayam favoritmu, lalu tambah topping sesuai selera mulai dari 2k.",
+"starting_price": 2000,
+"display_price": "Topping mulai dari 2k"
+}
+],
+"faq": [
+{
+"question": "Jam buka Mie Ayam Lariska jam berapa?",
+"answer": "Buka mulai pukul 10.00 WIB sampai habis, maksimal sampai 18.00 WIB."
+},
+{
+"question": "Bisa pesan lewat WhatsApp?",
+"answer": "Bisa. Pemesanan bisa langsung ke WhatsApp 081364856560."
+},
+{
+"question": "Bisa pesan untuk acara?",
+"answer": "Bisa. Mie Ayam Lariska menerima pesanan untuk berbagai acara."
+},
+{
+"question": "Lokasinya di mana?",
+"answer": "Masuk Jalan III Pasar Kambing Adijaya, di samping toko Fairamart. Bisa cari di Google Maps dengan nama Mie Ayam Lariska."
+},
+{
+"question": "Bisa tambah topping?",
+"answer": "Bisa. Tersedia topping tambahan seperti ceker, pangsit rebus, bakso, telur puyuh, kepala ayam, sayap, tulangan, dan pangsit goreng."
+}
+],
+"brand_style": {
+"tone_of_voice": [
+"Ramah",
+"Sederhana",
+"Lokal",
+"Hangat",
+"Tidak terlalu formal",
+"Fokus ke enak, murah, topping lengkap, dan bisa pesan acara"
+],
+"colors": {
+"primary": "#C40000",
+"secondary": "#FFD033",
+"accent": "#F28C28",
+"background": "#FFF1D6",
+"text": "#1F1F1F",
+"button_text": "#FFFFFF"
+},
+"color_usage": {
+"main_background": "#FFF1D6",
+"primary_button": "#C40000",
+"primary_button_text": "#FFFFFF",
+"highlight_price": "#FFD033",
+"icon_accent": "#F28C28",
+"main_text": "#1F1F1F"
+}
+},
+"website_structure": [
+{
+"section": "Hero",
+"content": [
+"Nama brand",
+"Tagline",
+"Foto makanan",
+"Tombol WhatsApp",
+"Tombol Google Maps"
+]
+},
+{
+"section": "Tentang Kami",
+"content": [
+"Cerita singkat Mie Ayam Lariska",
+"Since 2023",
+"Keunggulan topping lengkap dan harga terjangkau"
+]
+},
+{
+"section": "Menu",
+"content": [
+"Pilihan Mie Ayam",
+"Minuman",
+"Topping Tambahan"
+]
+},
+{
+"section": "Paket Rekomendasi",
+"content": [
+"Paket Hemat",
+"Paket Favorit",
+"Paket Kenyang",
+"Paket Topping Suka-Suka"
+]
+},
+{
+"section": "Pesanan Acara",
+"content": [
+"Informasi menerima pesanan acara",
+"CTA WhatsApp"
+]
+},
+{
+"section": "Lokasi",
+"content": [
+"Alamat lengkap",
+"Tombol Google Maps"
+]
+},
+{
+"section": "Kontak",
+"content": [
+"WhatsApp",
+"Instagram",
+"Jam buka"
+]
+}
+],
+"ai_web_builder_prompt": {
+"goal": "Buat website sederhana untuk promosi Mie Ayam Lariska, menampilkan daftar menu, paket rekomendasi, lokasi, jam buka, dan tombol pemesanan WhatsApp.",
+"style": "Desain lokal, hangat, sederhana, clean, dominan warna merah dan cream dengan aksen kuning dan orange.",
+"target_customer": [
+"Warga sekitar Adijaya",
+"Keluarga",
+"Pekerja",
+"Pelajar",
+"Pelanggan yang ingin makan mie ayam murah dan enak",
+"Pelanggan yang butuh pesanan makanan untuk acara"
+],
+"main_conversion": "Customer melihat menu, tertarik, lalu order lewat WhatsApp atau datang ke lokasi.",
+"main_cta": "Pesan via WhatsApp",
+"secondary_cta": "Lihat lokasi di Google Maps"
+}
+}
