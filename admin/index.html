@@ -396,6 +396,34 @@
       // Category display order
       var CATEGORY_ORDER = ['Mie Ayam', 'Topping Tambahan', 'Minuman'];
 
+      // Badge configuration (matches visitor)
+      var BADGE_CONFIG = {
+        'favorit': { icon: '⭐', label: 'Favorit', class: 'favorit' },
+        'baru': { icon: '🆕', label: 'Baru', class: 'baru' },
+        'bestseller': { icon: '🔥', label: 'Best Seller', class: 'bestseller' },
+        'populer': { icon: '📈', label: 'Populer', class: 'populer' }
+      };
+
+      // Get status text
+      function getStatusText(status) {
+        switch (status) {
+          case 'available': return 'Tersedia';
+          case 'limited': return 'Terbatas';
+          case 'sold_out': return 'Habis';
+          default: return 'Tersedia';
+        }
+      }
+
+      // Format price in "12k" format (matches visitor)
+      function formatPriceK(price) {
+        return Math.round(Number(price) / 1000) + 'k';
+      }
+
+      // Format price in locale format (for packages)
+      function formatPrice(price) {
+        return Number(price).toLocaleString('id-ID');
+      }
+
       // Render menu grouped by category
       function renderMenuByCategory(grouped) {
         var container = document.getElementById('admin-menu');
@@ -421,18 +449,18 @@
           var items = grouped[category];
           
           var categorySection = document.createElement('div');
-          categorySection.className = 'admin-menu__category';
+          categorySection.className = 'menu__category';
           categorySection.setAttribute('data-category', category);
 
-          var categoryHeader = document.createElement('div');
-          categoryHeader.className = 'admin-menu__category-header';
-          categoryHeader.innerHTML = '<h3 class="admin-menu__category-title">' + category + '</h3>';
+          var categoryHeader = document.createElement('h3');
+          categoryHeader.className = 'menu__category-title';
+          categoryHeader.innerHTML = '<span class="menu__category-icon">🍜</span> ' + category;
 
           var itemsGrid = document.createElement('div');
-          itemsGrid.className = 'admin-menu__grid';
+          itemsGrid.className = 'menu__grid';
 
           items.forEach(function(item, index) {
-            var card = createMenuCard(item, index);
+            var card = createMenuCard(item, index, items.length);
             itemsGrid.appendChild(card);
           });
 
@@ -441,14 +469,10 @@
           container.appendChild(categorySection);
         });
 
-        // Initialize drag-drop for items
-        var grids = container.querySelectorAll('.admin-menu__grid');
+        // Initialize arrow buttons for items (all screen sizes)
+        var grids = container.querySelectorAll('.menu__grid');
         grids.forEach(function(grid) {
-          if (DragDropService.isMobile()) {
-            DragDropService.initArrowButtons(grid, handleItemReorder);
-          } else {
-            DragDropService.initDragDrop(grid, handleItemReorder);
-          }
+          DragDropService.initArrowButtons(grid, handleItemReorder);
         });
 
         // Initialize category reordering
@@ -488,21 +512,15 @@
         renderMenuByCategory(grouped);
       }
 
-      // Create menu card element
-      function createMenuCard(item, index) {
+      // Create menu card element (matches visitor structure)
+      function createMenuCard(item, index, totalItems) {
         var card = document.createElement('div');
-        card.className = 'admin-menu__card';
+        card.className = 'menu__item-card';
         card.setAttribute('data-item-id', item.id);
 
-        // Order/Rank badge
-        var rankBadge = document.createElement('div');
-        rankBadge.className = 'admin-menu__card-rank';
-        rankBadge.textContent = '#' + (index + 1);
-        rankBadge.title = 'Urutan menu (drag untuk mengubah)';
-
-        // Image container
+        // === Image container (matches visitor: .menu__item-image) ===
         var imageContainer = document.createElement('div');
-        imageContainer.className = 'admin-menu__card-image';
+        imageContainer.className = 'menu__item-image';
         
         var img = document.createElement('img');
         var slug = item.name.toLowerCase().replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
@@ -510,57 +528,67 @@
         img.alt = item.name;
         img.loading = 'lazy';
         img.onerror = function() {
-          this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80"%3E%3Crect fill="%23f0f0f0" width="80" height="80"/%3E%3Ctext fill="%23999" font-family="sans-serif" font-size="12" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3ENo Image%3C/text%3E%3C/svg%3E';
+          this.style.display = 'none';
+          var placeholder = document.createElement('div');
+          placeholder.className = 'menu__item-image-placeholder';
+          placeholder.textContent = 'No Image';
+          this.parentNode.insertBefore(placeholder, this);
+          this.onerror = null;
         };
         imageContainer.appendChild(img);
 
-        var statusBadge = document.createElement('span');
-        statusBadge.className = 'badge badge--' + item.status;
-        statusBadge.textContent = FirebaseService.getStatusText(item.status);
-
-        // Menu badge (Favorit, Baru, Best Seller, Populer)
-        var menuBadge = null;
-        if (item.badge) {
-          menuBadge = document.createElement('span');
-          menuBadge.className = 'admin-menu__card-badge admin-menu__card-badge--' + item.badge;
-          var badgeIcons = {
-            'favorit': '⭐',
-            'baru': '🆕',
-            'bestseller': '🔥',
-            'populer': '📈'
-          };
-          var badgeLabels = {
-            'favorit': 'Favorit',
-            'baru': 'Baru',
-            'bestseller': 'Best Seller',
-            'populer': 'Populer'
-          };
-          menuBadge.textContent = (badgeIcons[item.badge] || '') + ' ' + (badgeLabels[item.badge] || item.badge);
+        // Badge on top-left of image (matches visitor)
+        if (item.badge && BADGE_CONFIG[item.badge]) {
+          var badgeEl = document.createElement('span');
+          badgeEl.className = 'menu__item-badge menu__item-badge--' + BADGE_CONFIG[item.badge].class;
+          badgeEl.textContent = BADGE_CONFIG[item.badge].icon + ' ' + BADGE_CONFIG[item.badge].label;
+          imageContainer.appendChild(badgeEl);
         }
 
-        var nameEl = document.createElement('h4');
-        nameEl.className = 'admin-menu__card-name';
-        nameEl.textContent = item.name;
-        nameEl.title = 'Klik untuk edit';
-        nameEl.addEventListener('click', function() {
-          openEditModal(item.id);
-        });
+        // Stock status on bottom-right of image (matches visitor)
+        var stockBadge = document.createElement('span');
+        stockBadge.className = 'menu__item-stock menu__item-stock--' + (item.status || 'available');
+        var stockIcon = '';
+        switch (item.status) {
+          case 'available': stockIcon = '✓'; break;
+          case 'limited': stockIcon = '!'; break;
+          case 'sold_out': stockIcon = '✕'; break;
+          default: stockIcon = '✓';
+        }
+        stockBadge.innerHTML = '<span class="menu__item-stock-icon">' + stockIcon + '</span> ' + getStatusText(item.status || 'available');
+        imageContainer.appendChild(stockBadge);
 
-        var priceEl = document.createElement('p');
-        priceEl.className = 'admin-menu__card-price';
-        priceEl.textContent = 'Rp ' + formatPrice(item.price);
-        priceEl.title = 'Klik untuk edit';
-        priceEl.addEventListener('click', function() {
-          openEditModal(item.id);
-        });
+        // === Info section (matches visitor: .menu__item-info) ===
+        var infoSection = document.createElement('div');
+        infoSection.className = 'menu__item-info';
+
+        var nameEl = document.createElement('h4');
+        nameEl.className = 'menu__item-name';
+        nameEl.textContent = item.name;
 
         var descEl = document.createElement('p');
-        descEl.className = 'admin-menu__card-desc';
+        descEl.className = 'menu__item-description';
         descEl.textContent = item.description || '-';
-        descEl.title = 'Klik untuk edit';
-        descEl.addEventListener('click', function() {
-          openEditModal(item.id);
-        });
+
+        var footerEl = document.createElement('div');
+        footerEl.className = 'menu__item-footer';
+
+        var priceEl = document.createElement('p');
+        priceEl.className = 'menu__item-price';
+        var priceSpan = document.createElement('span');
+        priceSpan.className = 'price';
+        priceSpan.textContent = formatPriceK(item.price);
+        priceEl.appendChild(priceSpan);
+        footerEl.appendChild(priceEl);
+
+        infoSection.appendChild(nameEl);
+        infoSection.appendChild(descEl);
+        infoSection.appendChild(footerEl);
+
+        // === Admin controls (below price, with border-top separator) ===
+        var controlsEl = document.createElement('div');
+        controlsEl.className = 'admin-menu__card-controls';
+        controlsEl.style.marginTop = 'var(--space-md)';
 
         var actionsEl = document.createElement('div');
         actionsEl.className = 'admin-menu__card-actions';
@@ -584,23 +612,40 @@
         actionsEl.appendChild(editBtn);
         actionsEl.appendChild(deleteBtn);
 
-        card.appendChild(rankBadge);
+        // Arrow buttons for reorder
+        var arrowsEl = document.createElement('div');
+        arrowsEl.className = 'item-arrows';
+        arrowsEl.style.display = 'flex';
+        arrowsEl.style.flexDirection = 'column';
+        arrowsEl.style.gap = '4px';
+        arrowsEl.style.marginLeft = 'auto';
+
+        var upBtn = document.createElement('button');
+        upBtn.className = 'arrow-btn arrow-btn--up';
+        upBtn.innerHTML = '▲';
+        upBtn.title = 'Pindah ke atas';
+        upBtn.style.cssText = 'background:var(--color-primary);color:white;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:10px;';
+        upBtn.disabled = index === 0;
+
+        var downBtn = document.createElement('button');
+        downBtn.className = 'arrow-btn arrow-btn--down';
+        downBtn.innerHTML = '▼';
+        downBtn.title = 'Pindah ke bawah';
+        downBtn.style.cssText = 'background:var(--color-primary);color:white;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:10px;';
+        downBtn.disabled = index === totalItems - 1;
+
+        arrowsEl.appendChild(upBtn);
+        arrowsEl.appendChild(downBtn);
+
+        controlsEl.appendChild(actionsEl);
+        controlsEl.appendChild(arrowsEl);
+
+        // === Assemble card (matches visitor structure) ===
         card.appendChild(imageContainer);
-        card.appendChild(statusBadge);
-        if (menuBadge) {
-          card.appendChild(menuBadge);
-        }
-        card.appendChild(nameEl);
-        card.appendChild(priceEl);
-        card.appendChild(descEl);
-        card.appendChild(actionsEl);
+        card.appendChild(infoSection);
+        card.appendChild(controlsEl);
 
         return card;
-      }
-
-      // Format price
-      function formatPrice(price) {
-        return Number(price).toLocaleString('id-ID');
       }
 
       // Handle item reorder
