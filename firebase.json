@@ -1,0 +1,19 @@
+{
+  "database": {
+    "rules": "database.rules.json"
+  },
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "database.rules.json",
+      "node_modules/",
+      ".git/",
+      "docs/",
+      "tests/",
+      "firebase.txt",
+      "package.json",
+      "playwright.config.js"
+    ]
+  }
+}
