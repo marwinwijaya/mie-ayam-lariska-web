@@ -469,14 +469,8 @@
           container.appendChild(categorySection);
         });
 
-        // Initialize arrow buttons for items (all screen sizes)
-        var grids = container.querySelectorAll('.menu__grid');
-        grids.forEach(function(grid) {
-          DragDropService.initArrowButtons(grid, handleItemReorder);
-        });
-
-        // Initialize category reordering
-        DragDropService.initCategoryReorder(container, handleCategoryReorder);
+        // Initialize category arrow buttons
+        initCategoryArrowButtons(container);
       }
 
       // Render menu from Firebase data
@@ -626,6 +620,10 @@
         upBtn.title = 'Pindah ke atas';
         upBtn.style.cssText = 'background:var(--color-primary);color:white;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:10px;';
         upBtn.disabled = index === 0;
+        upBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          moveItemUp(card);
+        });
 
         var downBtn = document.createElement('button');
         downBtn.className = 'arrow-btn arrow-btn--down';
@@ -633,6 +631,10 @@
         downBtn.title = 'Pindah ke bawah';
         downBtn.style.cssText = 'background:var(--color-primary);color:white;border:none;border-radius:4px;padding:4px 8px;cursor:pointer;font-size:10px;';
         downBtn.disabled = index === totalItems - 1;
+        downBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          moveItemDown(card);
+        });
 
         arrowsEl.appendChild(upBtn);
         arrowsEl.appendChild(downBtn);
@@ -673,6 +675,163 @@
 
         FirebaseService.menuRef.update(updates).catch(function(error) {
           console.error('Failed to update category order:', error);
+        });
+      }
+
+      // Move item up in grid
+      function moveItemUp(card) {
+        var grid = card.parentElement;
+        var prevSibling = card.previousElementSibling;
+        
+        if (prevSibling && prevSibling.classList.contains('menu__item-card')) {
+          grid.insertBefore(card, prevSibling);
+          updateItemArrowButtons(grid);
+          
+          // Get new order and update Firebase
+          var orderedIds = [];
+          var items = grid.querySelectorAll('.menu__item-card');
+          items.forEach(function(item) {
+            orderedIds.push(item.getAttribute('data-item-id'));
+          });
+          
+          handleItemReorder(orderedIds);
+        }
+      }
+
+      // Move item down in grid
+      function moveItemDown(card) {
+        var grid = card.parentElement;
+        var nextSibling = card.nextElementSibling;
+        
+        if (nextSibling && nextSibling.classList.contains('menu__item-card')) {
+          grid.insertBefore(nextSibling, card);
+          updateItemArrowButtons(grid);
+          
+          // Get new order and update Firebase
+          var orderedIds = [];
+          var items = grid.querySelectorAll('.menu__item-card');
+          items.forEach(function(item) {
+            orderedIds.push(item.getAttribute('data-item-id'));
+          });
+          
+          handleItemReorder(orderedIds);
+        }
+      }
+
+      // Update arrow button disabled states for items in grid
+      function updateItemArrowButtons(grid) {
+        var items = grid.querySelectorAll('.menu__item-card');
+        
+        items.forEach(function(item, index) {
+          var upBtn = item.querySelector('.arrow-btn--up');
+          var downBtn = item.querySelector('.arrow-btn--down');
+          
+          if (upBtn) upBtn.disabled = index === 0;
+          if (downBtn) downBtn.disabled = index === items.length - 1;
+        });
+      }
+
+      // Move category up
+      function moveCategoryUp(categorySection) {
+        var container = categorySection.parentElement;
+        var prevSibling = categorySection.previousElementSibling;
+        
+        if (prevSibling && prevSibling.classList.contains('menu__category')) {
+          container.insertBefore(categorySection, prevSibling);
+          updateCategoryArrowButtons(container);
+          
+          // Get new order and update Firebase
+          var orderedCategories = [];
+          var categories = container.querySelectorAll('.menu__category');
+          categories.forEach(function(cat) {
+            var title = cat.querySelector('.menu__category-title');
+            if (title) {
+              orderedCategories.push(title.textContent.trim());
+            }
+          });
+          
+          handleCategoryReorder(orderedCategories);
+        }
+      }
+
+      // Move category down
+      function moveCategoryDown(categorySection) {
+        var container = categorySection.parentElement;
+        var nextSibling = categorySection.nextElementSibling;
+        
+        if (nextSibling && nextSibling.classList.contains('menu__category')) {
+          container.insertBefore(nextSibling, categorySection);
+          updateCategoryArrowButtons(container);
+          
+          // Get new order and update Firebase
+          var orderedCategories = [];
+          var categories = container.querySelectorAll('.menu__category');
+          categories.forEach(function(cat) {
+            var title = cat.querySelector('.menu__category-title');
+            if (title) {
+              orderedCategories.push(title.textContent.trim());
+            }
+          });
+          
+          handleCategoryReorder(orderedCategories);
+        }
+      }
+
+      // Update arrow button disabled states for categories
+      function updateCategoryArrowButtons(container) {
+        var categories = container.querySelectorAll('.menu__category');
+        
+        categories.forEach(function(category, index) {
+          var upBtn = category.querySelector('.category-arrow--up');
+          var downBtn = category.querySelector('.category-arrow--down');
+          
+          if (upBtn) upBtn.disabled = index === 0;
+          if (downBtn) downBtn.disabled = index === categories.length - 1;
+        });
+      }
+
+      // Initialize category arrow buttons
+      function initCategoryArrowButtons(container) {
+        var categories = container.querySelectorAll('.menu__category');
+        
+        categories.forEach(function(category, index) {
+          var header = category.querySelector('.menu__category-title');
+          if (!header) return;
+          
+          // Create arrow buttons container
+          var arrowsContainer = document.createElement('div');
+          arrowsContainer.className = 'category-arrows';
+          arrowsContainer.style.display = 'inline-flex';
+          arrowsContainer.style.gap = '4px';
+          arrowsContainer.style.marginLeft = '8px';
+          
+          // Up button
+          var upBtn = document.createElement('button');
+          upBtn.className = 'category-arrow category-arrow--up';
+          upBtn.innerHTML = '▲';
+          upBtn.title = 'Pindah kategori ke atas';
+          upBtn.style.cssText = 'background:var(--color-primary);color:white;border:none;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:10px;';
+          upBtn.disabled = index === 0;
+          upBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            moveCategoryUp(category);
+          });
+          
+          // Down button
+          var downBtn = document.createElement('button');
+          downBtn.className = 'category-arrow category-arrow--down';
+          downBtn.innerHTML = '▼';
+          downBtn.title = 'Pindah kategori ke bawah';
+          downBtn.style.cssText = 'background:var(--color-primary);color:white;border:none;border-radius:4px;padding:2px 6px;cursor:pointer;font-size:10px;';
+          downBtn.disabled = index === categories.length - 1;
+          downBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            moveCategoryDown(category);
+          });
+          
+          arrowsContainer.appendChild(upBtn);
+          arrowsContainer.appendChild(downBtn);
+          header.appendChild(arrowsContainer);
         });
       }
 
