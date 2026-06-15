@@ -504,6 +504,39 @@ ul {
   color: white;
 }
 
+.menu__item-stock {
+  position: absolute;
+  bottom: var(--space-sm);
+  right: var(--space-sm);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+  font-size: var(--font-size-xs);
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  backdrop-filter: blur(4px);
+}
+
+.menu__item-stock-icon {
+  font-weight: 900;
+}
+
+.menu__item-stock--available {
+  background-color: rgba(46, 125, 50, 0.9);
+  color: white;
+}
+
+.menu__item-stock--limited {
+  background-color: rgba(249, 168, 37, 0.9);
+  color: white;
+}
+
+.menu__item-stock--sold_out {
+  background-color: rgba(196, 0, 0, 0.9);
+  color: white;
+}
+
 .menu__item-image-placeholder {
   width: 100%;
   height: 100%;
@@ -592,7 +625,7 @@ ul {
   padding: 4px 10px;
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: var(--space-xs);
@@ -601,16 +634,25 @@ ul {
 .badge--available {
   background-color: var(--color-available-bg);
   color: var(--color-available);
+  border: 1px solid var(--color-available);
 }
 
 .badge--limited {
   background-color: var(--color-limited-bg);
   color: var(--color-limited);
+  border: 1px solid var(--color-limited);
+}
+
+.badge--sold_out {
+  background-color: var(--color-soldout-bg);
+  color: var(--color-soldout);
+  border: 1px solid var(--color-soldout);
 }
 
 .badge--soldout {
   background-color: var(--color-soldout-bg);
   color: var(--color-soldout);
+  border: 1px solid var(--color-soldout);
 }
 
 /* === Packages Section === */
@@ -663,13 +705,6 @@ ul {
   min-height: 60px;
 }
 
-.packages__card-description {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-light);
-  margin-bottom: var(--space-md);
-  min-height: 60px;
-}
-
 .packages__card-items li {
   font-size: var(--font-size-sm);
   color: var(--color-text-light);
@@ -680,6 +715,7 @@ ul {
   font-size: var(--font-size-sm);
   color: var(--color-text-light);
   margin-bottom: var(--space-md);
+  min-height: 60px;
 }
 
 .packages__card-price {
@@ -687,11 +723,15 @@ ul {
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: var(--space-lg);
+  min-height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .packages__card .btn {
   width: 100%;
-  margin-top: auto;
+  min-height: 44px;
 }
 
 /* === Events Section === */

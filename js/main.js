@@ -158,13 +158,45 @@
       var nameEl = card.querySelector('.menu__item-name');
       if (!nameEl || nameEl.textContent.trim() !== name) return;
 
+      // Remove existing stock badge
+      var existingStockBadge = card.querySelector('.menu__item-stock');
+      if (existingStockBadge) {
+        existingStockBadge.remove();
+      }
+
       // Remove existing badge
       var existingBadge = card.querySelector('.badge');
       if (existingBadge) {
         existingBadge.remove();
       }
 
-      // Create new badge
+      // Create stock badge in image area
+      var imageContainer = card.querySelector('.menu__item-image');
+      if (imageContainer) {
+        var stockBadge = document.createElement('span');
+        stockBadge.className = 'menu__item-stock menu__item-stock--' + status;
+        
+        // Set icon based on status
+        var icon = '';
+        switch (status) {
+          case 'available':
+            icon = '✓';
+            break;
+          case 'limited':
+            icon = '!';
+            break;
+          case 'sold_out':
+            icon = '✕';
+            break;
+          default:
+            icon = '✓';
+        }
+        
+        stockBadge.innerHTML = '<span class="menu__item-stock-icon">' + icon + '</span> ' + getStatusText(status);
+        imageContainer.appendChild(stockBadge);
+      }
+
+      // Create badge in info section
       var badge = document.createElement('span');
       badge.className = 'badge badge--' + status;
       badge.textContent = getStatusText(status);
@@ -183,8 +215,26 @@
       // Update card styling for sold out items
       if (status === 'sold_out') {
         card.style.opacity = '0.6';
+        card.style.pointerEvents = 'none';
+        
+        // Disable order button
+        var orderBtn = card.querySelector('.menu__item-order');
+        if (orderBtn) {
+          orderBtn.disabled = true;
+          orderBtn.textContent = 'Habis';
+          orderBtn.style.backgroundColor = '#ccc';
+        }
       } else {
         card.style.opacity = '1';
+        card.style.pointerEvents = 'auto';
+        
+        // Enable order button
+        var orderBtn = card.querySelector('.menu__item-order');
+        if (orderBtn) {
+          orderBtn.disabled = false;
+          orderBtn.textContent = 'Pesan';
+          orderBtn.style.backgroundColor = '';
+        }
       }
     });
   }
