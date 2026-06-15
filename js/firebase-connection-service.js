@@ -33,12 +33,12 @@
 
     if (statusElement) {
       if (connected) {
-        statusElement.textContent = 'Terhubung';
-        statusElement.style.color = '#2E7D32';
+        statusElement.textContent = '● Terhubung';
+        statusElement.style.color = '#A5F0A5';
         statusElement.style.fontWeight = '600';
       } else {
-        statusElement.textContent = 'Terputus';
-        statusElement.style.color = '#C40000';
+        statusElement.textContent = '● Terputus';
+        statusElement.style.color = '#FFB3B3';
         statusElement.style.fontWeight = '600';
       }
     }

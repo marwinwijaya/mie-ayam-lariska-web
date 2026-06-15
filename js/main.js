@@ -287,6 +287,139 @@
   }
 
   // ---------------------------------------------------------------------------
+  // Image Preview Popup
+  // ---------------------------------------------------------------------------
+
+  var imagePopup = null;
+  var popupTimeout = null;
+
+  /**
+   * Create the image popup element
+   */
+  function createImagePopup() {
+    if (imagePopup) return;
+
+    imagePopup = document.createElement('div');
+    imagePopup.className = 'image-popup';
+    imagePopup.innerHTML = '
+      <div class="image-popup__content">
+        <img class="image-popup__image" src="" alt="">
+        <div class="image-popup__info">
+          <div class="image-popup__name"></div>
+          <div class="image-popup__price"></div>
+        </div>
+      </div>
+    ';
+    document.body.appendChild(imagePopup);
+  }
+
+  /**
+   * Show image popup near the cursor
+   */
+  function showImagePopup(card, event) {
+    createImagePopup();
+
+    var name = card.querySelector('.menu__item-name');
+    var price = card.querySelector('.price');
+    var img = card.querySelector('.menu__item-image img');
+
+    if (!name) return;
+
+    var popupImg = imagePopup.querySelector('.image-popup__image');
+    var popupName = imagePopup.querySelector('.image-popup__name');
+    var popupPrice = imagePopup.querySelector('.image-popup__price');
+
+    popupName.textContent = name.textContent;
+    popupPrice.textContent = price ? price.textContent : '';
+
+    if (img && img.src) {
+      popupImg.src = img.src;
+      popupImg.alt = name.textContent;
+    } else {
+      // Try to load from slug
+      var slug = generateSlug(name.textContent);
+      popupImg.src = 'images/' + slug + '.jpg';
+      popupImg.alt = name.textContent;
+    }
+
+    // Position popup
+    var x = event.clientX + 20;
+    var y = event.clientY - 100;
+
+    // Keep popup within viewport
+    var popupWidth = 300;
+    var popupHeight = 350;
+
+    if (x + popupWidth > window.innerWidth) {
+      x = event.clientX - popupWidth - 20;
+    }
+    if (y < 10) {
+      y = 10;
+    }
+    if (y + popupHeight > window.innerHeight) {
+      y = window.innerHeight - popupHeight - 10;
+    }
+
+    imagePopup.style.left = x + 'px';
+    imagePopup.style.top = y + 'px';
+    imagePopup.classList.add('is-visible');
+  }
+
+  /**
+   * Hide image popup
+   */
+  function hideImagePopup() {
+    if (imagePopup) {
+      imagePopup.classList.remove('is-visible');
+    }
+  }
+
+  /**
+   * Initialize image popup on menu cards
+   */
+  function initImagePopup() {
+    // Only enable on non-touch devices
+    if ('ontouchstart' in window) return;
+
+    var cards = document.querySelectorAll('.menu__item-card');
+
+    cards.forEach(function(card) {
+      card.addEventListener('mouseenter', function(e) {
+        clearTimeout(popupTimeout);
+        popupTimeout = setTimeout(function() {
+          showImagePopup(card, e);
+        }, 300); // 300ms delay before showing
+      });
+
+      card.addEventListener('mousemove', function(e) {
+        if (imagePopup && imagePopup.classList.contains('is-visible')) {
+          // Update position as mouse moves
+          var x = e.clientX + 20;
+          var y = e.clientY - 100;
+
+          if (x + 300 > window.innerWidth) {
+            x = e.clientX - 320;
+          }
+          if (y < 10) {
+            y = 10;
+          }
+          if (y + 350 > window.innerHeight) {
+            y = window.innerHeight - 360;
+          }
+
+          imagePopup.style.left = x + 'px';
+          imagePopup.style.top = y + 'px';
+        }
+      });
+
+      card.addEventListener('mouseleave', function() {
+        clearTimeout(popupTimeout);
+        hideImagePopup();
+      });
+    });
+  }
+
+  // ---------------------------------------------------------------------------
   // Smooth Scrolling
   // ---------------------------------------------------------------------------
 
@@ -328,6 +461,7 @@
     initFAQ();
     initSmoothScroll();
     initMenuImages();
+    initImagePopup();
 
     // Delay Firebase initialization slightly to ensure SDK is loaded
     setTimeout(function () {
