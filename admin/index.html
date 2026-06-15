@@ -201,13 +201,29 @@
         });
       }
 
+      // Category display order
+      var CATEGORY_ORDER = ['Mie Ayam', 'Topping Tambahan', 'Minuman'];
+
       // Render menu grouped by category
       function renderMenuByCategory(grouped) {
         var container = document.getElementById('admin-menu');
         container.innerHTML = '';
 
-        // Get category order from Firebase or default
-        var categories = Object.keys(grouped);
+        // Sort categories by predefined order
+        var categories = Object.keys(grouped).sort(function(a, b) {
+          var indexA = CATEGORY_ORDER.indexOf(a);
+          var indexB = CATEGORY_ORDER.indexOf(b);
+          
+          // If both are in the order list, sort by index
+          if (indexA !== -1 && indexB !== -1) {
+            return indexA - indexB;
+          }
+          // If only one is in the list, it comes first
+          if (indexA !== -1) return -1;
+          if (indexB !== -1) return 1;
+          // If neither is in the list, sort alphabetically
+          return a.localeCompare(b);
+        });
 
         categories.forEach(function(category) {
           var items = grouped[category];
