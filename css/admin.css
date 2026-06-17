@@ -205,10 +205,9 @@
 
 .admin-menu__category {
   background-color: var(--color-surface);
-  border-radius: var(--radius-xl);
+  border-radius: var(--radius-lg);
   padding: var(--space-xl);
   box-shadow: var(--shadow-sm);
-  border: 1px solid var(--color-border);
 }
 
 .admin-menu__category-header {
@@ -226,83 +225,67 @@
 
 .admin-menu__grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-md);
 }
 
 .admin-menu__card {
-  background-color: var(--color-surface);
-  border-radius: var(--radius-xl);
-  overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  background-color: var(--color-background);
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  transition: all var(--transition-fast);
+  position: relative;
   display: flex;
   flex-direction: column;
-  transition: all var(--transition-normal);
-  border: 2px solid transparent;
-  position: relative;
 }
 
 .admin-menu__card:hover {
-  box-shadow: var(--shadow-lg);
   border-color: var(--color-secondary);
-  transform: translateY(-4px);
+  box-shadow: var(--shadow-md);
 }
 
 .admin-menu__card-rank {
   position: absolute;
   top: var(--space-sm);
   left: var(--space-sm);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
+  background-color: var(--color-primary);
+  color: var(--color-button-text);
   font-size: var(--font-size-xs);
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(135deg, var(--color-primary) 0%, #A30000 100%);
-  color: white;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  z-index: 1;
 }
 
 .admin-menu__card-image {
   width: 100%;
-  height: 160px;
-  flex-shrink: 0;
+  height: 120px;
+  margin-bottom: var(--space-md);
+  border-radius: var(--radius-md);
   overflow: hidden;
-  position: relative;
+  background-color: var(--color-surface-alt);
 }
 
 .admin-menu__card-image img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform var(--transition-normal);
-}
-
-.admin-menu__card:hover .admin-menu__card-image img {
-  transform: scale(1.1);
 }
 
 .admin-menu__card .badge {
   position: absolute;
   top: var(--space-sm);
-  left: var(--space-sm);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  z-index: 2;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+  right: var(--space-sm);
 }
 
 .admin-menu__card-name {
-  font-size: var(--font-size-lg);
+  font-size: var(--font-size-base);
   font-weight: 700;
   color: var(--color-text);
   margin-bottom: var(--space-xs);
   cursor: pointer;
+  padding-right: 80px;
 }
 
 .admin-menu__card-name:hover {
@@ -310,30 +293,15 @@
 }
 
 .admin-menu__card-price {
-  font-size: var(--font-size-xl);
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-  width: 100%;
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+  color: var(--color-primary);
+  margin-bottom: var(--space-xs);
   cursor: pointer;
 }
 
-.admin-menu__card-price .price {
-  color: var(--color-button-text);
-  background: linear-gradient(135deg, var(--color-primary) 0%, #A30000 100%);
-  padding: 6px 20px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  min-width: 60px;
-  text-align: center;
-  display: inline-block;
-}
-
-.admin-menu__card-price:hover .price {
-  opacity: 0.9;
+.admin-menu__card-price:hover {
+  text-decoration: underline;
 }
 
 .admin-menu__card-desc {
@@ -349,47 +317,39 @@
   color: var(--color-text);
 }
 
-.admin-menu__card-footer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: auto;
-  padding-top: var(--space-md);
-  border-top: 2px dashed var(--color-border);
-}
-
 .admin-menu__card-badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 6px 12px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
   font-size: var(--font-size-xs);
   font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
   margin-bottom: var(--space-sm);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 .admin-menu__card-badge--favorit {
-  background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
-  color: #333;
+  background-color: #FFF3CD;
+  color: #856404;
+  border: 1px solid #FFD700;
 }
 
 .admin-menu__card-badge--baru {
-  background: linear-gradient(135deg, #28A745 0%, #218838 100%);
-  color: white;
+  background-color: #D4EDDA;
+  color: #155724;
+  border: 1px solid #28A745;
 }
 
 .admin-menu__card-badge--bestseller {
-  background: linear-gradient(135deg, var(--color-primary) 0%, #A30000 100%);
-  color: white;
+  background-color: #F8D7DA;
+  color: #721C24;
+  border: 1px solid #DC3545;
 }
 
 .admin-menu__card-badge--populer {
-  background: linear-gradient(135deg, var(--color-accent) 0%, #E6A800 100%);
-  color: white;
+  background-color: #CCE5FF;
+  color: #004085;
+  border: 1px solid #007BFF;
 }
 
 .position-control {
@@ -405,136 +365,8 @@
 .admin-menu__card-actions {
   display: flex;
   gap: var(--space-sm);
-  border-top: 2px dashed var(--color-border);
-  padding-top: var(--space-md);
-  margin-top: auto;
-}
-
-.admin-menu__card-actions .btn {
-  flex: 1;
-  font-size: var(--font-size-sm);
-  padding: var(--space-xs) var(--space-sm);
-}
-
-/* ============================================================
-   Admin-Scoped Visitor Class Overrides
-   The admin HTML now uses visitor class names (T2 refactor).
-   These overrides scope admin-specific adjustments under
-   .admin-dashboard to avoid affecting the visitor page.
-   ============================================================ */
-
-/* Admin grid: uses visitor .menu__grid class */
-.admin-dashboard .menu__grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-lg);
-}
-
-/* Admin card: inherits visitor styles, admin-specific adjustments */
-.admin-dashboard .menu__item-card {
-  /* Visitor styles apply from style.css */
-  /* Admin-specific: ensure proper cursor for admin controls */
-  cursor: default;
-}
-
-/* Stock badge position: top-right for admin (visitor has bottom-right) */
-.admin-dashboard .menu__item-stock {
-  position: absolute;
-  top: var(--space-sm);
-  right: var(--space-sm);
-  bottom: auto;
-  left: auto;
-  padding: 4px 10px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  backdrop-filter: blur(4px);
-  z-index: 2;
-}
-
-/* Badge position: top-left for admin (matches visitor) */
-.admin-dashboard .menu__item-badge {
-  position: absolute;
-  top: var(--space-sm);
-  left: var(--space-sm);
-  padding: 6px 12px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-xs);
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  z-index: 3;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-}
-
-/* Price format: pill badge matching visitor */
-.admin-dashboard .menu__item-price {
-  font-size: var(--font-size-xl);
-  font-weight: 800;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  flex-wrap: wrap;
-  width: 100%;
-}
-
-.admin-dashboard .menu__item-price .price {
-  color: var(--color-button-text);
-  background: linear-gradient(135deg, var(--color-primary) 0%, #A30000 100%);
-  padding: 6px 20px;
-  border-radius: var(--radius-full);
-  font-size: var(--font-size-sm);
-  min-width: 60px;
-  text-align: center;
-  display: inline-block;
-}
-
-/* Admin controls container */
-.admin-dashboard .admin-menu__card-controls {
-  margin-top: var(--space-md);
-  padding-top: var(--space-md);
-  border-top: 2px dashed var(--color-border);
-}
-
-/* Admin action buttons */
-.admin-dashboard .admin-menu__card-actions {
-  display: flex;
-  gap: var(--space-sm);
-  padding-top: 0;
-}
-
-.admin-dashboard .admin-menu__card-actions .btn {
-  flex: 1;
-  font-size: var(--font-size-sm);
-  padding: var(--space-xs) var(--space-sm);
-}
-
-/* Responsive: Admin grid breakpoints (match visitor) */
-@media (min-width: 768px) {
-  .admin-dashboard .menu__grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-lg);
-  }
-
-  .admin-dashboard .menu__item-image {
-    height: 200px;
-  }
-}
-
-@media (min-width: 1024px) {
-  .admin-dashboard .menu__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1280px) {
-  .admin-dashboard .menu__grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
+  border-top: 1px solid var(--color-border);
+  padding-top: var(--space-sm);
 }
 
 /* === Modal === */
@@ -781,14 +613,8 @@
     justify-content: space-between;
   }
 
-  /* Visitor class names (used by admin HTML after T2 refactor) */
-  .admin-dashboard .menu__item-image {
-    height: 160px;
-  }
-
-  /* Legacy admin class names */
-  .admin-menu__card-image {
-    height: 160px;
+  .admin-menu__grid {
+    grid-template-columns: repeat(2, 1fr);
   }
 
   .modal__content {
@@ -805,46 +631,13 @@
 }
 
 @media (min-width: 768px) {
-  /* Visitor class names (used by admin HTML after T2 refactor) */
-  .admin-dashboard .menu__grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-lg);
-  }
-
-  .admin-dashboard .menu__item-image {
-    height: 200px;
-  }
-
-  /* Legacy admin class names */
   .admin-menu__grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--space-lg);
-  }
-
-  .admin-menu__card-image {
-    height: 200px;
-  }
-
-  .admin-menu__category {
-    padding: var(--space-2xl);
   }
 }
 
 @media (min-width: 1024px) {
-  /* Visitor class names (used by admin HTML after T2 refactor) */
-  .admin-dashboard .menu__grid {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
-  /* Legacy admin class names */
   .admin-menu__grid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-@media (min-width: 1280px) {
-  /* Visitor class names (used by admin HTML after T2 refactor) */
-  .admin-dashboard .menu__grid {
     grid-template-columns: repeat(4, 1fr);
   }
 }

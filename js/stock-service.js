@@ -26,13 +26,6 @@
   var DEFAULT_STATUS = 'available';
 
   // ---------------------------------------------------------------------------
-  // Internal state
-  // ---------------------------------------------------------------------------
-
-  /** Whether the app is currently displaying cached (stale) data */
-  var _usingCachedData = false;
-
-  // ---------------------------------------------------------------------------
   // Normalization
   // ---------------------------------------------------------------------------
 
@@ -207,48 +200,6 @@
   }
 
   // ---------------------------------------------------------------------------
-  // Error indicator
-  // ---------------------------------------------------------------------------
-
-  /**
-   * Show the error indicator banner ("Menampilkan data terakhir").
-   */
-  function showErrorIndicator() {
-    _usingCachedData = true;
-    var el = document.getElementById('stock-error-indicator');
-    if (el) {
-      el.style.display = '';
-    }
-  }
-
-  /**
-   * Hide the error indicator banner.
-   */
-  function hideErrorIndicator() {
-    _usingCachedData = false;
-    var el = document.getElementById('stock-error-indicator');
-    if (el) {
-      el.style.display = 'none';
-    }
-  }
-
-  /**
-   * Check whether the app is currently displaying cached data.
-   * @return {boolean}
-   */
-  function isUsingCachedData() {
-    return _usingCachedData;
-  }
-
-  /**
-   * Set the cached data usage state programmatically.
-   * @param {boolean} value
-   */
-  function setUsingCachedData(value) {
-    _usingCachedData = !!value;
-  }
-
-  // ---------------------------------------------------------------------------
   // Public API
   // ---------------------------------------------------------------------------
   window.StockService = {
@@ -267,12 +218,6 @@
     mergeStockData:          mergeStockData,
     processFirebaseData:     processFirebaseData,
     processAndCacheFirebaseData: processAndCacheFirebaseData,
-
-    // Error indicator
-    showErrorIndicator:      showErrorIndicator,
-    hideErrorIndicator:      hideErrorIndicator,
-    isUsingCachedData:       isUsingCachedData,
-    setUsingCachedData:      setUsingCachedData,
 
     // Constants (exposed for testing)
     CACHE_KEY:               CACHE_KEY,

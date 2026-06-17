@@ -381,54 +381,6 @@ test.describe('Stock Service — Fallback Logic', () => {
   });
 });
 
-test.describe('Stock Service — Error Indicator', () => {
-  test.beforeEach(async ({ page }) => {
-    await page.goto('/');
-    await page.evaluate(() => localStorage.clear());
-  });
-
-  test('shows error indicator when using cached data', async ({ page }) => {
-    await page.goto('/');
-    await page.evaluate(() => {
-      StockService.showErrorIndicator();
-    });
-
-    const indicator = page.locator('#stock-error-indicator');
-    await expect(indicator).toBeVisible();
-    await expect(indicator).toContainText('Menampilkan data terakhir');
-  });
-
-  test('hides error indicator', async ({ page }) => {
-    await page.goto('/');
-    await page.evaluate(() => {
-      StockService.showErrorIndicator();
-    });
-    await page.evaluate(() => {
-      StockService.hideErrorIndicator();
-    });
-
-    const indicator = page.locator('#stock-error-indicator');
-    await expect(indicator).toBeHidden();
-  });
-
-  test('tracks cached data usage state', async ({ page }) => {
-    await page.goto('/');
-    let usingCache = await page.evaluate(() => {
-      return StockService.isUsingCachedData();
-    });
-    expect(usingCache).toBe(false);
-
-    await page.evaluate(() => {
-      StockService.setUsingCachedData(true);
-    });
-
-    usingCache = await page.evaluate(() => {
-      return StockService.isUsingCachedData();
-    });
-    expect(usingCache).toBe(true);
-  });
-});
-
 test.describe('Stock Service — Missing and Orphaned Entries', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
@@ -474,5 +426,137 @@ test.describe('Stock Service — Missing and Orphaned Entries', () => {
     });
     expect(cached).toBeTruthy();
     expect(cached['mie_ayam_komplit'].status).toBe('sold_out');
+  });
+});
+
+// ===========================================================================
+// Performance — Script Loading
+// ===========================================================================
+test.describe('Performance — Script Loading', () => {
+  test('no script tags in head element', async ({ page }) => {
+    await page.goto('/');
+    const scriptsInHead = await page.evaluate(() => {
+      return document.head.querySelectorAll('script').length;
+    });
+    expect(scriptsInHead).toBe(0);
+  });
+
+  test('all script tags at bottom of body', async ({ page }) => {
+    await page.goto('/');
+    const scriptInfo = await page.evaluate(() => {
+      const scripts = document.body.querySelectorAll('script');
+      const bodyChildren = Array.from(document.body.children);
+      const lastScript = scripts[scripts.length - 1];
+      const lastScriptIndex = bodyChildren.indexOf(lastScript);
+      return {
+        scriptCount: scripts.length,
+        lastScriptIndex: lastScriptIndex,
+        totalChildren: bodyChildren.length,
+        isAtBottom: lastScriptIndex >= bodyChildren.length - 3
+      };
+    });
+    expect(scriptInfo.scriptCount).toBeGreaterThan(0);
+    expect(scriptInfo.isAtBottom).toBe(true);
+  });
+
+  test('no stock-error-indicator element exists', async ({ page }) => {
+    await page.goto('/');
+    const indicator = page.locator('#stock-error-indicator');
+    await expect(indicator).toHaveCount(0);
+  });
+});
+
+// ===========================================================================
+// Performance — Skeleton Loading
+// ===========================================================================
+test.describe('Performance — Skeleton Loading', () => {
+  test('skeleton elements visible before Firebase connects', async ({ page }) => {
+    await page.route('**/*firebaseio.com/**', route => route.abort());
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    const skeletons = page.locator('.skeleton:not(.skeleton--hidden)');
+    const count = await skeletons.count();
+    expect(count).toBeGreaterThan(0);
+  });
+
+  test('correct skeleton count per category', async ({ page }) => {
+    await page.route('**/*firebaseio.com/**', route => route.abort());
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    
+    // Mie Ayam: 11 skeletons
+    const mieAyam = page.locator('[data-section="menu"] .menu__category').first();
+    const mieAyamSkeletons = mieAyam.locator('.skeleton__card');
+    expect(await mieAyamSkeletons.count()).toBe(11);
+    
+    // Topping: 8 skeletons
+    const topping = page.locator('[data-section="menu"] .menu__category').nth(1);
+    const toppingSkeletons = topping.locator('.skeleton__card');
+    expect(await toppingSkeletons.count()).toBe(8);
+    
+    // Minuman: 5 skeletons
+    const minuman = page.locator('[data-section="menu"] .menu__category').nth(2);
+    const minumanSkeletons = minuman.locator('.skeleton__card');
+    expect(await minumanSkeletons.count()).toBe(5);
+  });
+});
+
+// ===========================================================================
+// Performance — Optimistic Tersedia
+// ===========================================================================
+test.describe('Performance — Optimistic Tersedia', () => {
+  test('all menu items show Tersedia badge on initial load', async ({ page }) => {
+    await page.route('**/*firebaseio.com/**', route => route.abort());
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.waitForSelector('.menu__item-card', { timeout: 5000 });
+    
+    const badges = page.locator('.menu__item-stock');
+    const count = await badges.count();
+    expect(count).toBeGreaterThan(0);
+    
+    for (let i = 0; i < count; i++) {
+      const text = await badges.nth(i).textContent();
+      expect(text.trim()).toContain('Tersedia');
+    }
+  });
+
+  test('no error banner shown when Firebase connection fails', async ({ page }) => {
+    await page.route('**/*firebaseio.com/**', route => route.abort());
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await page.waitForTimeout(2000);
+    
+    const errorIndicator = page.locator('#stock-error-indicator');
+    await expect(errorIndicator).toHaveCount(0);
+  });
+});
+
+// ===========================================================================
+// Performance — Image Fallback
+// ===========================================================================
+test.describe('Performance — Image Fallback', () => {
+  test('missing menu image shows cream placeholder', async ({ page }) => {
+    await page.route('**/images/**', route => route.fulfill({
+      status: 404, body: '', contentType: 'text/plain'
+    }));
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    
+    const fallbacks = page.locator('.image-fallback');
+    const count = await fallbacks.count();
+    expect(count).toBeGreaterThan(0);
+    
+    const firstFallback = fallbacks.first();
+    await expect(firstFallback).toContainText('🍜');
+  });
+
+  test('fallback uses brand background color', async ({ page }) => {
+    await page.route('**/images/**', route => route.fulfill({
+      status: 404, body: '', contentType: 'text/plain'
+    }));
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    
+    const bgColor = await page.evaluate(() => {
+      const fallback = document.querySelector('.image-fallback');
+      return fallback ? window.getComputedStyle(fallback).backgroundColor : null;
+    });
+    expect(bgColor).toBeTruthy();
+    expect(bgColor).not.toBe('rgb(240, 240, 240)'); // not generic gray
   });
 });

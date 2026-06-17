@@ -1,0 +1,59 @@
+{
+  "header": {
+    "plan_dir": "docs/pocket/plans/2026-06-16-web-app-performance-ux-review",
+    "plan_type": "flat",
+    "status": "IN_PROGRESS",
+    "date_started": "2026-06-16",
+    "date_completed": null,
+    "baseline_sha": "e6c1465ca4525213d233b1ce1992db6a83117282"
+  },
+  "phases": [
+    {
+      "order": 1,
+      "file": "execution-plan.md",
+      "status": "REVIEW",
+      "tasks": [
+        {
+          "id": "T1",
+          "name": "Move scripts to bottom & remove error indicator",
+          "status": "DONE",
+          "done_sha": "6678cd24b10df89690bee3676245fd202f858849"
+        },
+        {
+          "id": "T2",
+          "name": "Add shimmer skeleton CSS + HTML",
+          "status": "DONE",
+          "depends": "T1",
+          "done_sha": "13e82cf92c294a3e490b390941af2f0d8dfca9f9"
+        },
+        {
+          "id": "T3",
+          "name": "Add skeleton-to-content transition + optimistic Tersedia",
+          "status": "DONE",
+          "depends": "T2",
+          "done_sha": "813a64ed9ab776950c4f2b53040ec46e09bcbd0b"
+        },
+        {
+          "id": "T4",
+          "name": "Add image fallback system",
+          "status": "DONE",
+          "depends": "T1",
+          "done_sha": "13e82cf92c294a3e490b390941af2f0d8dfca9f9"
+        },
+        {
+          "id": "T5",
+          "name": "Fix admin grid responsive breakpoint",
+          "status": "DONE",
+          "done_sha": "6678cd24b10df89690bee3676245fd202f858849"
+        },
+        {
+          "id": "T6",
+          "name": "E2E test updates",
+          "status": "DONE",
+          "depends": "T3, T4, T5",
+          "done_sha": "1a4d90597c62d21060ea8f30d8fd587c1921d91e"
+        }
+      ]
+    }
+  ]
+}

@@ -133,3 +133,38 @@ test.describe('Admin Auth - localStorage Session', () => {
     expect(isLoggedIn).toBeNull();
   });
 });
+
+// ===========================================================================
+// Admin Grid — Responsive Breakpoints
+// ===========================================================================
+test.describe('Admin Grid — Responsive Breakpoints', () => {
+  test('shows 3 columns at 768px viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 768, height: 1024 });
+    await page.goto('/admin/login.html');
+    await page.evaluate(() => { localStorage.setItem('admin_logged_in', 'true'); });
+    await page.goto('/admin/index.html');
+    await page.waitForSelector('.admin-menu__grid', { timeout: 10000 });
+    
+    const columns = await page.evaluate(() => {
+      const grid = document.querySelector('.admin-menu__grid');
+      return grid ? window.getComputedStyle(grid).gridTemplateColumns : null;
+    });
+    expect(columns).toBeTruthy();
+    expect(columns.split(' ').length).toBe(3);
+  });
+
+  test('shows 4 columns at 1024px viewport', async ({ page }) => {
+    await page.setViewportSize({ width: 1024, height: 768 });
+    await page.goto('/admin/login.html');
+    await page.evaluate(() => { localStorage.setItem('admin_logged_in', 'true'); });
+    await page.goto('/admin/index.html');
+    await page.waitForSelector('.admin-menu__grid', { timeout: 10000 });
+    
+    const columns = await page.evaluate(() => {
+      const grid = document.querySelector('.admin-menu__grid');
+      return grid ? window.getComputedStyle(grid).gridTemplateColumns : null;
+    });
+    expect(columns).toBeTruthy();
+    expect(columns.split(' ').length).toBe(4);
+  });
+});
