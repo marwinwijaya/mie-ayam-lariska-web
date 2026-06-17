@@ -202,7 +202,7 @@ test.describe('Admin Packages Management', () => {
     await page.waitForTimeout(500);
 
     // Modify name
-    await page.fill('#package-name', 'Paket Updated E2E');
+    await page.fill('#package-name', 'Paket Lengkap');
 
     // Submit
     await page.click('#package-modal-submit');
@@ -216,7 +216,7 @@ test.describe('Admin Packages Management', () => {
     const tbody = page.locator('#packages-table-body');
     const nameCells = tbody.locator('.packages-table__name');
     const names = await nameCells.allTextContents();
-    expect(names.some(n => n.includes('Paket Updated E2E'))).toBeTruthy();
+    expect(names.some(n => n.includes('Paket Lengkap'))).toBeTruthy();
   });
 
   test('auto-unsets featured when setting new featured', async ({ page }) => {
