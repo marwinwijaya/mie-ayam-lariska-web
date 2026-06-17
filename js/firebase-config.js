@@ -404,7 +404,7 @@
   // ---------------------------------------------------------------------------
   var INITIAL_PACKAGES_DATA = {
     'paket_hemat': {
-      name: 'Paket Hemat',
+      name: 'Paket Lengkap',
       description: 'Mie Ayam Biasa + Es Teh Manis',
       icon: '🍜',
       items: ['mie_ayam_biasa', 'es_teh_manis'],
@@ -412,7 +412,7 @@
       tag: 'Basic',
       isFeatured: false,
       isActive: true,
-      whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Hemat',
+      whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Lengkap',
       order: 1
     },
     'paket_favorit': {

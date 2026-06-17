@@ -113,7 +113,7 @@
 
   /**
    * Generate a slug from package name.
-   * "Paket Hemat" => "paket_hemat"
+   * "Paket Lengkap" => "paket_lengkap"
    * @param {string} name - Package display name
    * @returns {string} Slugified ID
    */

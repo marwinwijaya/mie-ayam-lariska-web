@@ -122,7 +122,7 @@ test.describe('Customer Packages Display', () => {
     const cardNames = page.locator('.packages__card-name');
     const names = await cardNames.allTextContents();
     const hasKnownPackage = names.some(n =>
-      n.includes('Paket Hemat') ||
+      n.includes('Paket Lengkap') ||
       n.includes('Paket Favorit') ||
       n.includes('Paket Kenyang') ||
       n.includes('Topping Suka-Suka')

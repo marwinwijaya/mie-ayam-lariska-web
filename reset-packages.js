@@ -45,7 +45,7 @@
     console.log('✅ Packages reset complete!');
     console.log('');
     console.log('Default packages restored:');
-    console.log('  - Paket Hemat (13k)');
+    console.log('  - Paket Lengkap (13k)');
     console.log('  - Paket Favorit (15k) ⭐ Featured');
     console.log('  - Paket Kenyang (18k)');
     console.log('  - Topping Suka-Suka (+2k)');
