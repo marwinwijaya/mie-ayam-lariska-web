@@ -77,8 +77,9 @@
         {
           "id": "T10",
           "name": "Write Unit Tests for All Services",
-          "status": "WAITING",
-          "depends": "T8, T9"
+          "status": "DONE",
+          "depends": "T8, T9",
+          "done_sha": "1dfc97bcecb0e9bd1c6e0ccf3ee6fc5c57d5c061"
         },
         {
           "id": "T11",

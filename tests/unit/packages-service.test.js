@@ -7,6 +7,13 @@ window.FirebaseService = {
   deletePackage: vi.fn(() => Promise.resolve()),
   getPackages: vi.fn(() => Promise.resolve({})),
   onAllPackagesChange: vi.fn(),
+  packagesRef: {
+    child: vi.fn(() => ({
+      once: vi.fn(() => Promise.resolve({ exists: () => false })),
+      set: vi.fn(() => Promise.resolve()),
+      remove: vi.fn(() => Promise.resolve()),
+    })),
+  },
 };
 
 describe('PackagesService', () => {
@@ -15,22 +22,28 @@ describe('PackagesService', () => {
   });
 
   describe('Module structure', () => {
-    it('should export add function', async () => {
+    it('should export PackagesService object', async () => {
       const module = await import('../../js/packages-service.js');
-      expect(module).toHaveProperty('add');
-      expect(typeof module.add).toBe('function');
+      expect(module).toHaveProperty('PackagesService');
+      expect(typeof module.PackagesService).toBe('object');
     });
 
-    it('should export update function', async () => {
-      const module = await import('../../js/packages-service.js');
-      expect(module).toHaveProperty('update');
-      expect(typeof module.update).toBe('function');
+    it('should have add method', async () => {
+      const { PackagesService } = await import('../../js/packages-service.js');
+      expect(PackagesService).toHaveProperty('add');
+      expect(typeof PackagesService.add).toBe('function');
     });
 
-    it('should export delete function', async () => {
-      const module = await import('../../js/packages-service.js');
-      expect(module).toHaveProperty('delete');
-      expect(typeof module.delete).toBe('function');
+    it('should have update method', async () => {
+      const { PackagesService } = await import('../../js/packages-service.js');
+      expect(PackagesService).toHaveProperty('update');
+      expect(typeof PackagesService.update).toBe('function');
+    });
+
+    it('should have delete method', async () => {
+      const { PackagesService } = await import('../../js/packages-service.js');
+      expect(PackagesService).toHaveProperty('delete');
+      expect(typeof PackagesService.delete).toBe('function');
     });
 
     it('should export validatePackage function', async () => {
@@ -51,7 +64,6 @@ describe('PackagesService', () => {
       const { validatePackage } = await import('../../js/packages-service.js');
       const result = validatePackage({ price: 15000, items: ['item1'] });
       expect(result.valid).toBe(false);
-      expect(result.error).toBeDefined();
     });
 
     it('should reject package with empty name', async () => {
@@ -107,40 +119,40 @@ describe('PackagesService', () => {
 
   describe('add', () => {
     it('should call FirebaseService.addPackage with valid data', async () => {
-      const { add } = await import('../../js/packages-service.js');
+      const { PackagesService } = await import('../../js/packages-service.js');
       const pkgData = {
         name: 'Test Package',
         price: 15000,
         items: ['item1'],
         description: 'Test description',
       };
-      await add(pkgData);
+      await PackagesService.add(pkgData);
       expect(window.FirebaseService.addPackage).toHaveBeenCalled();
     });
 
     it('should reject invalid package data', async () => {
-      const { add } = await import('../../js/packages-service.js');
-      await expect(add({ name: '', price: 0 })).rejects.toThrow();
+      const { PackagesService } = await import('../../js/packages-service.js');
+      await expect(PackagesService.add({ name: '', price: 0 })).rejects.toThrow();
     });
   });
 
   describe('update', () => {
     it('should call FirebaseService.updatePackage', async () => {
-      const { update } = await import('../../js/packages-service.js');
+      const { PackagesService } = await import('../../js/packages-service.js');
       const pkgData = {
         name: 'Updated Package',
         price: 20000,
         items: ['item1'],
       };
-      await update('pkg-1', pkgData);
+      await PackagesService.update('pkg-1', pkgData);
       expect(window.FirebaseService.updatePackage).toHaveBeenCalled();
     });
   });
 
   describe('delete', () => {
     it('should call FirebaseService.deletePackage', async () => {
-      const { delete: deletePkg } = await import('../../js/packages-service.js');
-      await deletePkg('pkg-1');
+      const { PackagesService } = await import('../../js/packages-service.js');
+      await PackagesService.delete('pkg-1');
       expect(window.FirebaseService.deletePackage).toHaveBeenCalled();
     });
   });

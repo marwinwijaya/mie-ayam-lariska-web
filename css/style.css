@@ -1803,3 +1803,51 @@ ul {
 .skeleton--hidden {
   display: none;
 }
+
+/* === Accessibility: Skip Link === */
+.skip-link {
+  position: absolute;
+  top: -100%;
+  left: 0;
+  background: var(--color-primary);
+  color: var(--color-button-text);
+  padding: var(--space-sm) var(--space-md);
+  z-index: 1000;
+  transition: top 0.3s ease;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: 0 0 var(--radius-md) 0;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid var(--color-secondary);
+  outline-offset: 2px;
+}
+
+/* === Accessibility: Reduced Motion === */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* === Accessibility: Focus Visible === */
+:focus-visible {
+  outline: 3px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* === Touch Targets (minimum 44x44px) === */
+.btn,
+button,
+a[href],
+[role="button"] {
+  min-height: 44px;
+  min-width: 44px;
+}

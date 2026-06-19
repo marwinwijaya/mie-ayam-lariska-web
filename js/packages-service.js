@@ -4,11 +4,10 @@
  * Provides centralized package management with input validation
  * and Firebase integration via FirebaseService.
  *
- * Architecture: IIFE module, exposes window.PackagesService
+ * Architecture: ES module
  */
 
-(function () {
-  'use strict';
+'use strict';
 
   // ---------------------------------------------------------------------------
   // Constants
@@ -359,34 +358,36 @@
     return FirebaseService.onAllPackagesChange(callback);
   }
 
-  // ---------------------------------------------------------------------------
-  // Expose public API via global namespace
-  // ---------------------------------------------------------------------------
-  window.PackagesService = {
-    // Validation
-    validateName:           validateName,
-    validatePrice:          validatePrice,
-    validateDescription:    validateDescription,
-    validateItems:          validateItems,
-    validatePackage:        validatePackage,
+// ---------------------------------------------------------------------------
+// Expose public API
+// ---------------------------------------------------------------------------
 
-    // Helper
-    nameToSlug:             nameToSlug,
+const PackagesService = {
+  // Validation
+  validateName,
+  validatePrice,
+  validateDescription,
+  validateItems,
+  validatePackage,
 
-    // CRUD
-    getAll:                 getAll,
-    getById:                getById,
-    add:                    add,
-    update:                 update,
-    delete:                 deletePkg,
-    onAllChange:            onAllChange,
+  // Helper
+  nameToSlug,
 
-    // Constants
-    MAX_NAME_LENGTH:        MAX_NAME_LENGTH,
-    MAX_DESCRIPTION_LENGTH: MAX_DESCRIPTION_LENGTH,
-    MIN_PRICE:              MIN_PRICE,
-    MAX_PRICE:              MAX_PRICE,
-    VALID_TAGS:             VALID_TAGS
-  };
+  // CRUD
+  getAll,
+  getById,
+  add,
+  update,
+  delete: deletePkg,
+  onAllChange,
 
-})();
+  // Constants
+  MAX_NAME_LENGTH,
+  MAX_DESCRIPTION_LENGTH,
+  MIN_PRICE,
+  MAX_PRICE,
+  VALID_TAGS
+};
+
+export { PackagesService, validatePackage };
+window.PackagesService = PackagesService;

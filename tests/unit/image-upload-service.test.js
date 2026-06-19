@@ -6,10 +6,16 @@ describe('ImageUploadService', () => {
   });
 
   describe('Module structure', () => {
-    it('should export init function', async () => {
+    it('should export ImageUploadService object', async () => {
       const module = await import('../../js/image-upload-service.js');
-      expect(module).toHaveProperty('init');
-      expect(typeof module.init).toBe('function');
+      expect(module).toHaveProperty('ImageUploadService');
+      expect(typeof module.ImageUploadService).toBe('object');
+    });
+
+    it('should have init method', async () => {
+      const { ImageUploadService } = await import('../../js/image-upload-service.js');
+      expect(ImageUploadService).toHaveProperty('init');
+      expect(typeof ImageUploadService.init).toBe('function');
     });
 
     it('should export getImagePath function', async () => {
@@ -18,10 +24,10 @@ describe('ImageUploadService', () => {
       expect(typeof module.getImagePath).toBe('function');
     });
 
-    it('should export validateFile function', async () => {
+    it('should export validateImage function', async () => {
       const module = await import('../../js/image-upload-service.js');
-      expect(module).toHaveProperty('validateFile');
-      expect(typeof module.validateFile).toBe('function');
+      expect(module).toHaveProperty('validateImage');
+      expect(typeof module.validateImage).toBe('function');
     });
 
     it('should set window.ImageUploadService for backward compat', async () => {
@@ -52,60 +58,60 @@ describe('ImageUploadService', () => {
     });
   });
 
-  describe('validateFile', () => {
+  describe('validateImage', () => {
     it('should accept valid image types', async () => {
-      const { validateFile } = await import('../../js/image-upload-service.js');
+      const { validateImage } = await import('../../js/image-upload-service.js');
       const validFile = { type: 'image/jpeg', size: 1024 * 100 }; // 100KB
-      const result = validateFile(validFile);
+      const result = validateImage(validFile);
       expect(result.valid).toBe(true);
     });
 
     it('should accept PNG images', async () => {
-      const { validateFile } = await import('../../js/image-upload-service.js');
+      const { validateImage } = await import('../../js/image-upload-service.js');
       const validFile = { type: 'image/png', size: 1024 * 100 };
-      const result = validateFile(validFile);
+      const result = validateImage(validFile);
       expect(result.valid).toBe(true);
     });
 
     it('should accept WebP images', async () => {
-      const { validateFile } = await import('../../js/image-upload-service.js');
+      const { validateImage } = await import('../../js/image-upload-service.js');
       const validFile = { type: 'image/webp', size: 1024 * 100 };
-      const result = validateFile(validFile);
+      const result = validateImage(validFile);
       expect(result.valid).toBe(true);
     });
 
     it('should reject non-image files', async () => {
-      const { validateFile } = await import('../../js/image-upload-service.js');
+      const { validateImage } = await import('../../js/image-upload-service.js');
       const invalidFile = { type: 'application/pdf', size: 1024 * 100 };
-      const result = validateFile(invalidFile);
+      const result = validateImage(invalidFile);
       expect(result.valid).toBe(false);
     });
 
     it('should reject files larger than 2MB', async () => {
-      const { validateFile } = await import('../../js/image-upload-service.js');
+      const { validateImage } = await import('../../js/image-upload-service.js');
       const largeFile = { type: 'image/jpeg', size: 1024 * 1024 * 3 }; // 3MB
-      const result = validateFile(largeFile);
+      const result = validateImage(largeFile);
       expect(result.valid).toBe(false);
     });
 
     it('should accept files under 2MB', async () => {
-      const { validateFile } = await import('../../js/image-upload-service.js');
+      const { validateImage } = await import('../../js/image-upload-service.js');
       const validFile = { type: 'image/jpeg', size: 1024 * 1024 * 1.5 }; // 1.5MB
-      const result = validateFile(validFile);
+      const result = validateImage(validFile);
       expect(result.valid).toBe(true);
     });
   });
 
   describe('init', () => {
     it('should return service instance', async () => {
-      const { init } = await import('../../js/image-upload-service.js');
+      const { ImageUploadService } = await import('../../js/image-upload-service.js');
       const mockConfig = {
         fileInput: { addEventListener: vi.fn() },
         preview: { src: '', style: { display: '' } },
         uploadArea: { classList: { add: vi.fn(), remove: vi.fn() }, addEventListener: vi.fn() },
         storagePath: 'images/menu',
       };
-      const instance = init(mockConfig);
+      const instance = ImageUploadService.init(mockConfig);
       expect(instance).toBeDefined();
       expect(instance).toHaveProperty('showImagePreview');
       expect(instance).toHaveProperty('uploadImage');

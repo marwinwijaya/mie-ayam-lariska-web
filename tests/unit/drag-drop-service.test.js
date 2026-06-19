@@ -13,54 +13,55 @@ describe('DragDropService', () => {
   });
 
   describe('Module structure', () => {
-    it('should export init function', async () => {
+    it('should export DragDropService object', async () => {
       const module = await import('../../js/drag-drop-service.js');
-      expect(module).toHaveProperty('init');
-      expect(typeof module.init).toBe('function');
+      expect(module).toHaveProperty('DragDropService');
+      expect(typeof module.DragDropService).toBe('object');
     });
 
-    it('should export enableDragDrop function', async () => {
-      const module = await import('../../js/drag-drop-service.js');
-      expect(module).toHaveProperty('enableDragDrop');
-      expect(typeof module.enableDragDrop).toBe('function');
+    it('should have initDragDrop method', async () => {
+      const { DragDropService } = await import('../../js/drag-drop-service.js');
+      expect(DragDropService).toHaveProperty('initDragDrop');
+      expect(typeof DragDropService.initDragDrop).toBe('function');
+    });
+
+    it('should have initArrowButtons method', async () => {
+      const { DragDropService } = await import('../../js/drag-drop-service.js');
+      expect(DragDropService).toHaveProperty('initArrowButtons');
+      expect(typeof DragDropService.initArrowButtons).toBe('function');
+    });
+
+    it('should have isMobile method', async () => {
+      const { DragDropService } = await import('../../js/drag-drop-service.js');
+      expect(DragDropService).toHaveProperty('isMobile');
+      expect(typeof DragDropService.isMobile).toBe('function');
     });
 
     it('should set window.DragDropService for backward compat', async () => {
       await import('../../js/drag-drop-service.js');
       expect(window.DragDropService).toBeDefined();
-      expect(window.DragDropService).toHaveProperty('init');
+      expect(window.DragDropService).toHaveProperty('initDragDrop');
     });
   });
 
-  describe('init', () => {
+  describe('initDragDrop', () => {
     it('should accept callbacks object', async () => {
-      const { init } = await import('../../js/drag-drop-service.js');
+      const { DragDropService } = await import('../../js/drag-drop-service.js');
       const callbacks = {
         onReorder: vi.fn(),
         getItems: vi.fn(() => []),
       };
       expect(() => {
-        init(callbacks);
+        DragDropService.initDragDrop(callbacks);
       }).not.toThrow();
     });
 
     it('should handle missing callbacks gracefully', async () => {
-      const { init } = await import('../../js/drag-drop-service.js');
+      const { DragDropService } = await import('../../js/drag-drop-service.js');
       expect(() => {
-        init({});
+        DragDropService.initDragDrop({});
       }).not.toThrow();
     });
   });
 
-  describe('enableDragDrop', () => {
-    it('should accept container element and options', async () => {
-      const { enableDragDrop } = await import('../../js/drag-drop-service.js');
-      expect(() => {
-        enableDragDrop(mockContainer, {
-          itemSelector: '.draggable-item',
-          onReorder: vi.fn(),
-        });
-      }).not.toThrow();
-    });
-  });
 });

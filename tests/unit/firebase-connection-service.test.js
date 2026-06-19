@@ -19,16 +19,28 @@ describe('FirebaseConnectionService', () => {
   });
 
   describe('Module structure', () => {
-    it('should export init function', async () => {
+    it('should export FirebaseConnectionService object', async () => {
       const module = await import('../../js/firebase-connection-service.js');
-      expect(module).toHaveProperty('init');
-      expect(typeof module.init).toBe('function');
+      expect(module).toHaveProperty('FirebaseConnectionService');
+      expect(typeof module.FirebaseConnectionService).toBe('object');
     });
 
-    it('should export isOnline function', async () => {
-      const module = await import('../../js/firebase-connection-service.js');
-      expect(module).toHaveProperty('isOnline');
-      expect(typeof module.isOnline).toBe('function');
+    it('should have init method', async () => {
+      const { FirebaseConnectionService } = await import('../../js/firebase-connection-service.js');
+      expect(FirebaseConnectionService).toHaveProperty('init');
+      expect(typeof FirebaseConnectionService.init).toBe('function');
+    });
+
+    it('should have getConnectionStatus method', async () => {
+      const { FirebaseConnectionService } = await import('../../js/firebase-connection-service.js');
+      expect(FirebaseConnectionService).toHaveProperty('getConnectionStatus');
+      expect(typeof FirebaseConnectionService.getConnectionStatus).toBe('function');
+    });
+
+    it('should have reconnect method', async () => {
+      const { FirebaseConnectionService } = await import('../../js/firebase-connection-service.js');
+      expect(FirebaseConnectionService).toHaveProperty('reconnect');
+      expect(typeof FirebaseConnectionService.reconnect).toBe('function');
     });
 
     it('should set window.FirebaseConnectionService for backward compat', async () => {
@@ -40,9 +52,9 @@ describe('FirebaseConnectionService', () => {
 
   describe('init', () => {
     it('should accept config object with DOM elements', async () => {
-      const { init } = await import('../../js/firebase-connection-service.js');
+      const { FirebaseConnectionService } = await import('../../js/firebase-connection-service.js');
       expect(() => {
-        init({
+        FirebaseConnectionService.init({
           statusElement: mockStatusElement,
           reconnectButton: mockReconnectButton,
         });
@@ -50,9 +62,9 @@ describe('FirebaseConnectionService', () => {
     });
 
     it('should handle missing DOM elements gracefully', async () => {
-      const { init } = await import('../../js/firebase-connection-service.js');
+      const { FirebaseConnectionService } = await import('../../js/firebase-connection-service.js');
       expect(() => {
-        init({
+        FirebaseConnectionService.init({
           statusElement: null,
           reconnectButton: null,
         });
@@ -60,10 +72,12 @@ describe('FirebaseConnectionService', () => {
     });
   });
 
-  describe('isOnline', () => {
-    it('should return boolean', async () => {
-      const { isOnline } = await import('../../js/firebase-connection-service.js');
-      expect(typeof isOnline()).toBe('boolean');
+  describe('getConnectionStatus', () => {
+    it('should return connection status', async () => {
+      const { FirebaseConnectionService } = await import('../../js/firebase-connection-service.js');
+      const status = FirebaseConnectionService.getConnectionStatus();
+      expect(typeof status).toBe('object');
+      expect(status).toHaveProperty('connected');
     });
   });
 });

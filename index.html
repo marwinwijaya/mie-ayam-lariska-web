@@ -94,6 +94,8 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <!-- Skip to content for keyboard users -->
+  <a href="#menu" class="skip-link">Langsung ke menu</a>
 
   <!-- ===== NAVIGATION ===== -->
   <nav class="nav" role="navigation" aria-label="Navigasi utama">
@@ -201,7 +203,7 @@
   </section>
 
   <!-- ===== MENU SECTION ===== -->
-  <section data-section="menu" class="menu" id="menu">
+  <section data-section="menu" class="menu" id="menu" aria-live="polite">
     <div class="container">
       <h2 class="section__title">Menu Kami</h2>
       <p class="menu__subtitle">Pilihan mie ayam dan minuman yang lezat</p>
@@ -683,94 +685,94 @@
       <div class="faq__grid">
         <div class="faq__column">
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-1">
               Jam buka Mie Ayam Lariska jam berapa?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-1">
               <p>Buka mulai pukul 10.00 WIB sampai habis, maksimal sampai 18.00 WIB. Kami tutup lebih awal jika stok sudah habis.</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-2">
               Bisa pesan lewat WhatsApp?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-2">
               <p>Bisa banget! Pemesanan bisa langsung ke WhatsApp <a href="https://wa.me/6281364856560">081364856560</a>. Tinggal kasih tahu mau pesan apa, nanti kami siapkan.</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-3">
               Bisa pesan untuk acara?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-3">
               <p>Bisa! Mie Ayam Lariska menerima pesanan untuk berbagai acara seperti arisan, syukuran, pengajian, meeting, dan acara keluarga. Hubungi kami minimal H-1 untuk pesanan acara.</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-4">
               Berapa harga menu termurah?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-4">
               <p>Menu termurah adalah Mie Ayam Mini seharga Rp5.000 dan Es Tawar Rp1.000. Harga kami sangat ramah di kantong!</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-5">
               Apakah ada menu paket?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-5">
               <p>Ada! Kami punya Paket Lengkap (Mie Ayam Biasa + Es Teh, mulai 13k), Paket Favorit (Mie Ayam Pangsit + Es Teh, mulai 15k), dan Paket Kenyang (Mie Ayam Komplit + Es Teh, mulai 18k).</p>
             </div>
           </div>
         </div>
         <div class="faq__column">
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-6">
               Lokasinya di mana?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-6">
               <p>Masuk Jalan III Pasar Kambing Adijaya, di samping toko Fairamart. Bisa cari di Google Maps dengan nama "Mie Ayam Lariska" atau <a href="https://maps.app.goo.gl/YjTAt7H2YGtyGfvN7" target="_blank">klik di sini</a>.</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-7">
               Bisa tambah topping?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-7">
               <p>Bisa! Tersedia topping tambahan mulai dari Rp2.000: ceker, pangsit rebus, bakso, telur puyuh, kepala ayam, sayap, tulangan, dan pangsit goreng.</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-8">
               Apakah bisa makan di tempat?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-8">
               <p>Bisa! Kami menyediakan tempat makan yang nyaman. Selain itu, juga bisa pesan untuk dibawa pulang (take away) atau pesan via WhatsApp untuk diantar.</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-9">
               Apakah Mie Ayam Lariska halal?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-9">
               <p>Ya, semua bahan yang kami gunakan halal. Mie Ayam Lariska menggunakan bahan-bahan berkualitas dan dimasak dengan cara yang bersih.</p>
             </div>
           </div>
           <div class="faq__item">
-            <button class="faq__question" aria-expanded="false">
+            <button class="faq__question" aria-expanded="false" aria-controls="faq-answer-10">
               Bagaimana cara pesan untuk rombongan?
               <span class="faq__icon">+</span>
             </button>
-            <div class="faq__answer">
+            <div class="faq__answer" id="faq-answer-10">
               <p>Untuk pesanan rombongan, silakan hubungi WhatsApp kami di <a href="https://wa.me/6281364856560">081364856560</a>. Beritahu jumlah porsi yang dibutuhkan dan waktu pengambilan/pengiriman.</p>
             </div>
           </div>
@@ -821,12 +823,12 @@
   </footer>
 
   <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script defer src="https://www.gstatic.com/firebasejs/10.7.1/firebase-database-compat.js"></script>
   
   <!-- Application Scripts -->
-  <script src="js/stock-service.js"></script>
-  <script src="js/firebase-config.js"></script>
-  <script src="js/main.js" defer></script>
+  <script defer src="js/stock-service.js"></script>
+  <script defer src="js/firebase-config.js"></script>
+  <script defer src="js/main.js"></script>
 </body>
 </html>
