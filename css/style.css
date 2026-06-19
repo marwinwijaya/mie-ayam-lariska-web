@@ -815,7 +815,6 @@ ul {
   padding: 6px 20px;
   border-radius: var(--radius-md);
   font-size: var(--font-size-sm);
-  min-width: 60px;
   text-align: center;
   display: inline-block;
 }
@@ -830,7 +829,6 @@ ul {
   text-transform: uppercase;
   letter-spacing: 0.5px;
   margin-top: var(--space-xs);
-  min-width: 60px;
   text-align: center;
 }
 
@@ -1745,7 +1743,6 @@ ul {
   justify-content: center;
   transition: all var(--transition-fast);
   white-space: nowrap;
-  min-width: 60px;
   text-align: center;
 }
 
