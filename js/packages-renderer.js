@@ -8,56 +8,56 @@
  */
 
 const FALLBACK_PACKAGES = {
-  'paket_hemat': {
-    name: 'Paket Lengkap',
-    description: 'Mie Ayam Biasa + Es Teh Manis',
-    icon: '🍜',
-    items: ['mie_ayam_biasa', 'es_teh_manis'],
-    itemNames: ['Mie Ayam Biasa', 'Es Teh Manis'],
-    price: 13000,
-    tag: 'Basic',
-    isFeatured: false,
-    isActive: true,
-    whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Lengkap',
-    order: 1
-  },
   'paket_favorit': {
     name: 'Paket Favorit',
-    description: 'Mie Ayam Pangsit + Es Teh Manis',
+    description: 'Mie Ayam + Es Nutri Sari / Es Teh Manis',
     icon: '🔥',
-    items: ['mie_ayam_pangsit', 'es_teh_manis'],
-    itemNames: ['Mie Ayam Pangsit', 'Es Teh Manis'],
-    price: 15000,
+    items: ['mie_ayam_biasa', 'es_nutrisari'],
+    itemNames: ['Mie Ayam', 'Es Nutri Sari / Es Teh Manis'],
+    price: 18000,
     tag: 'Best Seller',
     isFeatured: true,
     isActive: true,
     whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Favorit',
+    order: 1
+  },
+  'paket_mini': {
+    name: 'Paket Mini',
+    description: 'Mie Ayam Mini + Es Nutri Sari / Es Teh Manis',
+    icon: '🍜',
+    items: ['mie_ayam_mini', 'es_nutrisari'],
+    itemNames: ['Mie Ayam Mini', 'Es Nutri Sari / Es Teh Manis'],
+    price: 8000,
+    tag: 'Hemat',
+    isFeatured: false,
+    isActive: true,
+    whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Mini',
     order: 2
   },
-  'paket_kenyang': {
-    name: 'Paket Kenyang',
-    description: 'Mie Ayam Komplit + Es Teh Manis',
+  'paket_nikmat': {
+    name: 'Paket Nikmat',
+    description: 'Pangsit Kuah + Es Nutri Sari / Es Teh Manis',
     icon: '😋',
-    items: ['mie_ayam_komplit', 'es_teh_manis'],
-    itemNames: ['Mie Ayam Komplit', 'Es Teh Manis'],
-    price: 18000,
-    tag: 'Puas',
+    items: ['pangsit_kuah', 'es_nutrisari'],
+    itemNames: ['Pangsit Kuah', 'Es Nutri Sari / Es Teh Manis'],
+    price: 13000,
+    tag: 'Nikmat',
     isFeatured: false,
     isActive: true,
-    whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Kenyang',
+    whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Nikmat',
     order: 3
   },
-  'paket_spesial': {
-    name: 'Paket Spesial',
-    description: 'Mie Ayam Komplit + Es Nutrisari',
+  'paket_lengkap': {
+    name: 'Paket Lengkap',
+    description: 'Mie Ayam Komplit + Es Nutri Sari / Es Teh Manis',
     icon: '🎁',
     items: ['mie_ayam_komplit', 'es_nutrisari'],
-    itemNames: ['Mie Ayam Komplit', 'Es Nutrisari'],
+    itemNames: ['Mie Ayam Komplit', 'Es Nutri Sari / Es Teh Manis'],
     price: 18000,
-    tag: 'Spesial',
+    tag: 'Lengkap',
     isFeatured: false,
     isActive: true,
-    whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Spesial',
+    whatsappMessage: 'Halo Mie Ayam Lariska, saya mau pesan Paket Lengkap',
     order: 4
   }
 };
