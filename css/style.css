@@ -799,6 +799,7 @@ ul {
   padding-top: var(--space-md);
   border-top: 2px dashed var(--color-border);
   gap: var(--space-sm);
+  flex-wrap: wrap;
 }
 
 .menu__item-footer-separator {
@@ -806,6 +807,12 @@ ul {
   height: 24px;
   background-color: var(--color-border);
   flex-shrink: 0;
+}
+
+.menu__item-card:not(.menu__item-card--no-order) .menu__item-order {
+  width: 100%;
+  margin-top: var(--space-sm);
+  justify-content: center;
 }
 
 .menu__item-card--no-order .menu__item-footer {
