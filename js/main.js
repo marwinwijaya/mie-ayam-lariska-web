@@ -7,11 +7,8 @@
  * - Stock status updates from Firebase
  * - Smooth scrolling
  *
- * Architecture: ES Module, exposes initApp via export and window.initApp
+ * Architecture: Regular script (window globals)
  */
-
-import { debugLog, debugWarn } from './debug.js';
-import { getStatusText, BADGE_CONFIG, generateSlug, formatPriceK, sanitizeHtml } from './utils.js';
 
 // ---------------------------------------------------------------------------
 // Navigation Toggle
@@ -232,14 +229,14 @@ function updateMenuItemBadge(name, status) {
           icon = '✓';
       }
       
-      stockBadge.innerHTML = '<span class="menu__item-stock-icon">' + icon + '</span> ' + getStatusText(status);
+      stockBadge.innerHTML = '<span class="menu__item-stock-icon">' + icon + '</span> ' + AppUtils.getStatusText(status);
       imageContainer.appendChild(stockBadge);
     }
 
     // Create badge in info section
     var badge = document.createElement('span');
     badge.className = 'badge badge--' + status;
-    badge.textContent = getStatusText(status);
+    badge.textContent = AppUtils.getStatusText(status);
 
     // Add badge to info section
     var info = card.querySelector('.menu__item-info');
@@ -295,7 +292,7 @@ function initStockUpdates() {
   // Check if FirebaseService is available
   var FirebaseService = window.FirebaseService;
   if (typeof FirebaseService === 'undefined') {
-    debugWarn('[Main] FirebaseService not available. Stock updates disabled.');
+    DebugUtil.debugWarn('[Main] FirebaseService not available. Stock updates disabled.');
     return;
   }
 
@@ -304,14 +301,14 @@ function initStockUpdates() {
 
   // Seed initial stock data if needed
   FirebaseService.seedInitialStock().then(function () {
-    debugLog('[Main] Stock data initialized');
+    DebugUtil.debugLog('[Main] Stock data initialized');
   }).catch(function (error) {
     console.error('[Main] Error initializing stock:', error);
   });
 
   // Listen to all stock changes
   FirebaseService.onAllStockChange(function (stockData) {
-    debugLog('[Main] Stock data updated:', stockData);
+    DebugUtil.debugLog('[Main] Stock data updated:', stockData);
 
     // Transition from skeleton to content on first data arrival
     if (!_firebaseDataReceived) {
@@ -355,12 +352,12 @@ function updateMenuBadge(name, badge) {
     }
 
     // Add badge if exists
-    if (badge && BADGE_CONFIG[badge]) {
+    if (badge && AppUtils.BADGE_CONFIG[badge]) {
       var imageContainer = card.querySelector('.menu__item-image');
       if (imageContainer) {
         var badgeEl = document.createElement('span');
-        badgeEl.className = 'menu__item-badge menu__item-badge--' + BADGE_CONFIG[badge].class;
-        badgeEl.textContent = BADGE_CONFIG[badge].icon + ' ' + BADGE_CONFIG[badge].label;
+        badgeEl.className = 'menu__item-badge menu__item-badge--' + AppUtils.BADGE_CONFIG[badge].class;
+        badgeEl.textContent = AppUtils.BADGE_CONFIG[badge].icon + ' ' + AppUtils.BADGE_CONFIG[badge].label;
         imageContainer.appendChild(badgeEl);
       }
     }
@@ -373,7 +370,7 @@ function updateMenuBadge(name, badge) {
 function initBadgeUpdates() {
   var FirebaseService = window.FirebaseService;
   if (typeof FirebaseService === 'undefined') {
-    debugWarn('[Main] FirebaseService not available. Badge updates disabled.');
+    DebugUtil.debugWarn('[Main] FirebaseService not available. Badge updates disabled.');
     return;
   }
 
@@ -382,7 +379,7 @@ function initBadgeUpdates() {
     var menuData = snapshot.val();
     if (!menuData) return;
 
-    debugLog('[Main] Menu data updated for badges');
+    DebugUtil.debugLog('[Main] Menu data updated for badges');
 
     // Update badges for each menu item
     Object.keys(menuData).forEach(function (itemId) {
@@ -450,7 +447,7 @@ function showImagePopup(card, event) {
     popupImg.alt = name.textContent;
   } else {
     // Try to load from slug
-    var slug = generateSlug(name.textContent);
+    var slug = AppUtils.generateSlug(name.textContent);
     popupImg.src = 'images/' + slug + '.jpg';
     popupImg.alt = name.textContent;
   }
@@ -568,7 +565,7 @@ function initSmoothScroll() {
  * Call this when DOM is ready
  */
 function initApp() {
-  debugLog('[Main] Initializing Mie Ayam Lariska Web App...');
+  DebugUtil.debugLog('[Main] Initializing Mie Ayam Lariska Web App...');
 
   initNavigation();
   initFAQ();
@@ -594,15 +591,13 @@ function initApp() {
     };
   }
 
-  debugLog('[Main] App initialized successfully');
+  DebugUtil.debugLog('[Main] App initialized successfully');
 }
 
 // ---------------------------------------------------------------------------
 // Export
 // ---------------------------------------------------------------------------
-export { initApp };
-
-// Backward compatibility: expose on window for non-module scripts
+// Expose on window for non-module scripts
 window.initApp = initApp;
 
 // Auto-initialize when DOM is ready

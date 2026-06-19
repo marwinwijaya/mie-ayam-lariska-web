@@ -34,9 +34,7 @@ function debugError(...args) {
   console.error(...args);
 }
 
-export { isDebugMode, debugLog, debugWarn, debugError };
-
-// Backward compatibility for non-module scripts
+// Expose on window for non-module scripts
 if (typeof window !== 'undefined') {
   window.DebugUtil = { isDebugMode, debugLog, debugWarn, debugError };
 }

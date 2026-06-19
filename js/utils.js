@@ -140,20 +140,7 @@ function getImagePathWithBase(itemName, basePath) {
 // Export
 // ---------------------------------------------------------------------------
 
-export {
-  getStatusText,
-  BADGE_CONFIG,
-  formatPriceK,
-  formatPrice,
-  generateSlug,
-  escapeHtml,
-  sanitizeHtml,
-  buildWhatsAppLink,
-  getImagePath,
-  getImagePathWithBase
-};
-
-// Backward compatibility
+// Expose on window for non-module scripts
 if (typeof window !== 'undefined') {
   window.AppUtils = {
     getStatusText: getStatusText,

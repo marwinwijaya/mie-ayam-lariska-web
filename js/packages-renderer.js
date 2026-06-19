@@ -4,11 +4,8 @@
  * Fetches packages from Firebase and renders them as cards.
  * Falls back to hardcoded data if Firebase is unavailable.
  *
- * Architecture: ES Module
+ * Architecture: Regular script (window globals)
  */
-
-import { debugWarn } from './debug.js';
-import { escapeHtml, formatPriceK, generateSlug } from './utils.js';
 
 const FALLBACK_PACKAGES = {
   'paket_hemat': {
@@ -124,19 +121,19 @@ function renderPackages(packagesData, menuData, container) {
     }
 
     cardHtml += '<div class="packages__card-header">';
-    cardHtml += '<span class="packages__card-icon">' + escapeHtml(pkg.icon || '') + '</span>';
-    cardHtml += '<h3 class="packages__card-name">' + escapeHtml(pkg.name) + '</h3>';
-    cardHtml += '<span class="packages__card-tag">' + escapeHtml(pkg.tag || '') + '</span>';
+    cardHtml += '<span class="packages__card-icon">' + AppUtils.escapeHtml(pkg.icon || '') + '</span>';
+    cardHtml += '<h3 class="packages__card-name">' + AppUtils.escapeHtml(pkg.name) + '</h3>';
+    cardHtml += '<span class="packages__card-tag">' + AppUtils.escapeHtml(pkg.tag || '') + '</span>';
     cardHtml += '</div>';
 
     if (itemNames.length > 0) {
       cardHtml += '<ul class="packages__card-items">';
       itemNames.forEach(function(item) {
-        cardHtml += '<li>' + escapeHtml(item) + '</li>';
+        cardHtml += '<li>' + AppUtils.escapeHtml(item) + '</li>';
       });
       cardHtml += '</ul>';
     } else if (pkg.description) {
-      cardHtml += '<p class="packages__card-description">' + escapeHtml(pkg.description) + '</p>';
+      cardHtml += '<p class="packages__card-description">' + AppUtils.escapeHtml(pkg.description) + '</p>';
     }
 
     cardHtml += '<div class="packages__card-pricing">';
@@ -185,7 +182,7 @@ function loadPackages() {
       });
     });
   }).catch(function(err) {
-    debugWarn('[packages] Firebase error, using fallback:', err);
+    DebugUtil.debugWarn('[packages] Firebase error, using fallback:', err);
     renderPackages(FALLBACK_PACKAGES, null, container);
   });
 
@@ -196,7 +193,7 @@ function initPackagesRenderer() {
   let loaded = false;
   const fallbackTimer = setTimeout(function() {
     if (!loaded) {
-      debugWarn('[packages] FirebaseService timeout, rendering fallback');
+      DebugUtil.debugWarn('[packages] FirebaseService timeout, rendering fallback');
       const container = document.getElementById('packages-container');
       renderPackages(FALLBACK_PACKAGES, null, container);
     }
@@ -227,21 +224,9 @@ function initPackagesRenderer() {
   }, 100);
 }
 
-// Export for ES modules
-export {
-  FALLBACK_PACKAGES,
-  escapeHtml,
-  resolveItemNames,
-  buildWhatsAppLink,
-  renderPackages,
-  loadPackages,
-  initPackagesRenderer
-};
-
-// Backward compatibility
+// Expose on window for non-module scripts
 window.PackagesRenderer = {
   FALLBACK_PACKAGES,
-  escapeHtml,
   resolveItemNames,
   buildWhatsAppLink,
   renderPackages,

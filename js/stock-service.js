@@ -223,5 +223,4 @@ var StockService = {
   DEFAULT_STATUS:          DEFAULT_STATUS
 };
 
-export { StockService };
 window.StockService = StockService;

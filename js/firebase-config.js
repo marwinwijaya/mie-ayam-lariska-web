@@ -576,7 +576,7 @@ function getAllStock() {
 // ---------------------------------------------------------------------------
 // Export public API as ES module
 // ---------------------------------------------------------------------------
-export const FirebaseService = {
+const FirebaseService = {
   // Config
   config:               firebaseConfig,
   db:                   db,
