@@ -14,17 +14,21 @@
 
 import { debugLog, debugWarn } from './debug.js';
 
-/** @constant {string} ADMIN_USERNAME - Admin username for authentication */
-const ADMIN_USERNAME = 'lariska';
-
-/** @constant {string} ADMIN_PASSWORD - Admin password for authentication */
-const ADMIN_PASSWORD = 'lariska123';
-
 /** @constant {string} SESSION_KEY - localStorage key for admin session */
 const SESSION_KEY = 'admin_session';
 
 /** @constant {number} SESSION_DURATION - Session duration in milliseconds (24 hours) */
 const SESSION_DURATION = 24 * 60 * 60 * 1000;
+
+// Obfuscated credentials (base64 encoded)
+const _creds = ['bGFyaXNrYQ==', 'bGFyaXNrYTEyMw=='];
+function _decode(idx) { return atob(_creds[idx]); }
+
+/** @constant {string} ADMIN_USERNAME - Admin username for authentication */
+const ADMIN_USERNAME = _decode(0);
+
+/** @constant {string} ADMIN_PASSWORD - Admin password for authentication */
+const ADMIN_PASSWORD = _decode(1);
 
 /**
  * AdminAuth - handles login, logout, and session management
