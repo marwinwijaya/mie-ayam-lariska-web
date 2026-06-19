@@ -800,6 +800,15 @@ ul {
   border-top: 2px dashed var(--color-border);
 }
 
+.menu__item-card:not(.menu__item-card--no-order) .menu__item-footer {
+  justify-content: space-between;
+}
+
+.menu__item-card--no-order .menu__item-price {
+  font-size: var(--font-size-lg);
+  font-weight: 700;
+}
+
 .price {
   color: var(--color-button-text);
   background: linear-gradient(135deg, var(--color-primary) 0%, #A30000 100%);
